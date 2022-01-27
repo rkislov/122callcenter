@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    <div class="col s12 m7">
+        <h2 class="header">Информация о звонке</h2>
+        <form method="post" action="{% url 'calls:save' %}">
+            {% csrf_token %}
+            <div class="card horizontal">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <div class="row">
+                            {% comment %} <div class="input-field col s6">
+                                <i class="material-icons prefix">event</i>
+                                <input type="text" id="date" class="datepicker" name="date">
+                                <label for="date">Дата обращения</label>
+                            </div> {% endcomment %}
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">dialpad</i>
+                                <input placeholder="81234567890" id="call_number" type="text" class="validate" name="call_number">
+                                <label for="call_number">Номер звонящего</label>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <select name="subject">
+                                  <option value="" disabled selected>Тема обращения</option>
+                                  {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <select name="sub_subject">
+                                  <option value="" disabled selected>Подтема обращения</option>
+                                  {% for sub_subject in sub_subjects %}
+                                    <option value="{{ sub_subject.id }}">{{ sub_subject.name }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">event</i>
+                                <input type="text" id="date1" class="datepicker" name="registration_covid_date">
+                                <label for="date1">Дата регистрации COVID-19</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">dialpad</i>
+                                <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number">
+                                <label for="callback_number">Контактный номер</label>
+                            </div>
+                          </div>
+                            <div class="row">
+                                <form class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                    <textarea id="textarea1" class="materialize-textarea" name="question"></textarea>
+                                    <label for="textarea1">Содержание (Суть) вопроса</label>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <select name="manipulation">
+                                      <option value="" disabled selected>Произведенная консультация</option>
+                                      {% for manipulation in manipulations %}
+                                      <option value="{{ manipulation.id }}">{{ manipulation.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s12">
+                                    <select name="hospital">
+                                      <option value="" disabled selected>Обращение по МО</option>
+                                      {% for hospital in hospitals %}
+                                      <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio">
+                                    <label for="patient_fio">ФИО пациента</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">event</i>
+                                    <input type="text" id="date2" class="datepicker" name="date_of_birth">
+                                    <label for="date2">Дата рождения</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s12">
+                                    <select name="city">
+                                      <option value="" disabled selected>Город</option>
+                                      {% for city in citys %}
+                                      <option value="{{ city.id }}">{{ city.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="проспект Ленина" id="street" type="text" class="validate" name="street">
+                                    <label for="street">Улица</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input placeholder="74" id="number" type="text" class="validate" name="number">
+                                    <label for="street">Номер дома</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input placeholder="74" id="building" type="text" class="validate" name="building">
+                                    <label for="building">Корпус</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input placeholder="74" id="room" type="text" class="validate" name="room">
+                                    <label for="room">Квартира</label>
+                                </div>
+                              </div>
+                    </div>
+                    <div class="card-action">
+                    </div>
+                    <input class="waves-effect waves-light btn" type="submit" value="Сохранить" />
+                </div>
+            </div>
+        </form>
+      </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
+{% endblock js%}
