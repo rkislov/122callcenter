@@ -55,7 +55,7 @@ def save(request):
     patient_fio = request.POST.get('patient_fio')
     date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
     callback_number = request.POST.get('callback_number')
-    call_result = Call_result.objects.get(name="Обработан")
+#    call_result = Call_result.objects.get(name="Обработан")
     call_operator = request.user
     address = Address(
         street=street,
@@ -76,7 +76,7 @@ def save(request):
         question=question,
         address=address,
         callback_number=callback_number,
-        call_result=call_result,
+#        call_result=call_result,
         call_operator=call_operator,
         )
     call.save()

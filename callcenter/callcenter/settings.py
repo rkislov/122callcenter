@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=rn+(hkyea^-2kt$%79+n(l9v9jx#-5ps!$75l#u76kk*7qu^*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '10.0.16.234' ]
 
 
 # Application definition
@@ -72,12 +72,12 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
         'NAME': 'callcenter',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'callcenter',
+        'PASSWORD': 'P@ssw0rd',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '',
     }
 }
 
@@ -116,9 +116,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = '/var/www/122callcenter/callcenter/static'
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
