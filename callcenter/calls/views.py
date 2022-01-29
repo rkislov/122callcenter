@@ -4,6 +4,7 @@ from .models import Subject, Sub_subject, Patient, Manipulation, City, Hospital,
 import datetime
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 
 @login_required
@@ -11,7 +12,7 @@ def index(request):
     calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
     template = 'calls/index.html'
     context = {
-        'calls': calls
+        'calls': calls,
     }
     return render(request, template, context)
 

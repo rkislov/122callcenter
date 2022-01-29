@@ -10,6 +10,27 @@ class CallResource(resources.ModelResource):
 
 
 class CallAdmin(ImportExportModelAdmin):
+     # Перечисляем поля, которые должны отображаться в админке
+    list_display = (
+        'pk',
+        'date',
+        'call_number',
+        'question',
+        'hospital',
+        'call_result',
+        'manipulation',
+        'registration_covid_date',
+        'subject',
+        'sub_subject',
+        'manipulation'
+        )
+    list_filter = (
+        'date',
+        'hospital',
+        'subject',
+        'sub_subject',
+        'manipulation',
+        )
     resource_class = CallResource
 
 admin.site.register(Subject)
