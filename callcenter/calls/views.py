@@ -82,10 +82,10 @@ def save(request):
         patient_fio = request.POST.get('patient_fio')
     else:
         patient_fio = None
-    if( request.POST.get('date_of_birth') == ''): 
-        date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
-    else:
-        date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
+    # if( request.POST.get('date_of_birth') == ''): 
+    #     date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+    # else:
+        # date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
     # if( request.POST.get('registration_covid_date') == ''): 
     #     registration_covid_date = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
     # else:
@@ -122,7 +122,7 @@ def save(request):
 
     patient = Patient(
         patient_fio=patient_fio,
-        date_of_birth=date_of_birth,
+        # date_of_birth=date_of_birth,
         call=call
     )
     patient.save()

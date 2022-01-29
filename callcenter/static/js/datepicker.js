@@ -8,6 +8,7 @@
   $(document).ready(function(){
     $('.datepicker').datepicker({
         format: 'dd.mm.yyyy',
+        setDefaultDate:'01.01.1900',
         selectMonths: true,
         today: 'Сегодня',
         clear: 'Очистить',
