@@ -120,6 +120,8 @@ class Call(models.Model):
         null=True,
         blank=True
     )
+    complited = models.BooleanField(default=False)
+    urgent = models.BooleanField(default=False)
 
 
 class Patient(models.Model):

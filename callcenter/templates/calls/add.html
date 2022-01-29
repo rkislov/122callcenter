@@ -94,11 +94,11 @@
                                     <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio">
                                     <label for="patient_fio">ФИО пациента</label>
                                 </div>
-                                {% comment %} <div class="input-field col s6">
+                                <div class="input-field col s6">
                                     <i class="material-icons prefix">event</i>
                                     <input type="text" id="date2" class="datepicker" name="date_of_birth">
                                     <label for="date2">Дата рождения</label>
-                                </div> {% endcomment %}
+                                </div>
                               </div>
                               <div class="row">
                                 <div class="input-field col s12">
@@ -126,6 +126,20 @@
                                 <div class="input-field col s2">
                                     <input placeholder="74" id="room" type="text" class="validate" name="room">
                                     <label for="room">Квартира</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col s6 center"/>
+                                  <label>
+                                    <input type="checkbox" name="complited" />
+                                    <span>Звонок обработан</span>
+                                  </label>
+                                </div>
+                                <div class="col s6 center">
+                                  <label>
+                                    <input type="checkbox" name="urgent"/>
+                                    <span>Требует участия более опытного оператора</span>
+                                  </label>
                                 </div>
                               </div>
                     </div>
