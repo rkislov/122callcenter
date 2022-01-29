@@ -82,8 +82,14 @@ def save(request):
         patient_fio = request.POST.get('patient_fio')
     else:
         patient_fio = None
-    if( request.POST.get('date_of_birth') != None): 
+    if( request.POST.get('date_of_birth') == ''): 
+        date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+    else:
         date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
+    # if( request.POST.get('registration_covid_date') == ''): 
+    #     registration_covid_date = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+    # else:
+    #     registration_covid_date = datetime.datetime.strptime(request.POST.get('registration_covid_date'), '%d.%m.%Y').isoformat()    
     if( request.POST.get('callback_number') != None):
         callback_number = request.POST.get('callback_number')
     else:
@@ -102,7 +108,7 @@ def save(request):
         call_number=call_number,
         subject=subject,
         sub_subject=sub_subject,
-#        registration_covid_date=registration_covid_date,
+  #      registration_covid_date=registration_covid_date,
         manipulation=manipulation,
         hospital=hospital,
         city=city,
