@@ -26,7 +26,13 @@
           <tr>
             <td>{{call.date| date:"d.m.Y"}}</td>
             <td>{{call.call_number}}</td>
-            <td>{{call.call_result}}</td>
+            <td>{% if call.complited == True %}
+                  Обработан
+                {% else %}
+                  Требуется перезвонить
+                {% endif %}
+                
+            </td>
             <td></td>
           </tr>
           {% endfor %}

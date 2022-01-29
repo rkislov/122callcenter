@@ -86,15 +86,18 @@ def save(request):
         date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
     else:
         date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
-    #if( request.POST.get('registration_covid_date') == ''): 
-    #     registration_covid_date = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
-    #else:
-    #     registration_covid_date = datetime.datetime.strptime(request.POST.get('registration_covid_date'), '%d.%m.%Y').isoformat()    
+    if( request.POST.get('registration_covid_date') == ''): 
+         registration_covid_date = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+    else:
+         registration_covid_date = datetime.datetime.strptime(request.POST.get('registration_covid_date'), '%d.%m.%Y').isoformat()    
     if( request.POST.get('callback_number') != None):
         callback_number = request.POST.get('callback_number')
     else:
         callback_number = None
-#    call_result = Call_result.objects.get(name="Обработан")
+    if( request.POST.get('call_result') != None):
+        call_result = Hospital.objects.get(id=request.POST.get('call_result'))
+    else:
+        call_result = None
     if(request.POST.get('complited') == 'on'):
         complited = True
     else:
@@ -118,26 +121,26 @@ def save(request):
         call_number=call_number,
         subject=subject,
         sub_subject=sub_subject,
-  #      registration_covid_date=registration_covid_date,
+        registration_covid_date=registration_covid_date,
         manipulation=manipulation,
         hospital=hospital,
         city=city,
         question=question,
         address=address,
         callback_number=callback_number,
-#        call_result=call_result,
+        call_result=call_result,
         call_operator=call_operator,
         complited=complited,
         urgent=urgent,
         )
     call.save()
-
-    patient = Patient(
-        patient_fio=patient_fio,
-         date_of_birth=date_of_birth,
-        call=call
-    )
-    patient.save()
-    print(call.id)
+    if (request.POST.get(patient_fio) != None): 
+        patient = Patient(
+            patient_fio=patient_fio,
+            date_of_birth=date_of_birth,
+            call=call
+        )
+        patient.save()
+    
 
     return HttpResponseRedirect("/")
