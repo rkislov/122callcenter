@@ -88,7 +88,7 @@ class Call(models.Model):
     )
     callback_number = models.CharField(max_length=11, help_text="Введите номер с которого для обратной связи")
     question = models.TextField()
-    registration_covid_date = models.DateTimeField(null=True)
+    registration_covid_date = models.DateTimeField(null=True,blank=True)
     manipulation = models.ForeignKey(
         Manipulation,
         on_delete=models.SET_NULL,

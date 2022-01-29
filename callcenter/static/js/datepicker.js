@@ -6,7 +6,7 @@
   // Or with jQuery
 
   $(document).ready(function(){
-    $('.datepicker').datepicker({
+    $('.datepicker').each.datepicker({
         format: 'dd.mm.yyyy',
         selectMonths: true,
         today: 'Сегодня',

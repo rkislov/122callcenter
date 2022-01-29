@@ -41,20 +41,53 @@ def add(request):
 def save(request):
     date = datetime.datetime.now().isoformat()
     call_number = request.POST.get('call_number')
-    subject = Subject.objects.get(id=request.POST.get('subject'))
-    sub_subject = Sub_subject.objects.get(id=request.POST.get('sub_subject'))
-    registration_covid_date = datetime.datetime.strptime(request.POST.get('registration_covid_date'), '%d.%m.%Y').isoformat()
-    manipulation = Manipulation.objects.get(id=request.POST.get('manipulation'))
-    hospital = Hospital.objects.get(id=request.POST.get('hospital'))
-    city = City.objects.get(id=request.POST.get('city'))
+    if( request.POST.get('subject') != None):
+        subject = Subject.objects.get(id=request.POST.get('subject'))
+    else:
+        subject = None
+    if( request.POST.get('sub_subject') != None):
+        sub_subject = Sub_subject.objects.get(id=request.POST.get('sub_subject'))
+    else:
+        sub_subject = None
+    if( request.POST.get('manipulation') != None):
+        manipulation = Manipulation.objects.get(id=request.POST.get('manipulation'))
+    else:
+        manipulation = None
+    if( request.POST.get('hospital') != None):
+        hospital = Hospital.objects.get(id=request.POST.get('hospital'))
+    else:
+        hospital = None
+    if( request.POST.get('city') != None):    
+        city = City.objects.get(id=request.POST.get('city'))
+    else:
+        city = None
     question = request.POST.get('question')
-    street = request.POST.get('street')
-    number = request.POST.get('number')
-    building = request.POST.get('building')
-    room = request.POST.get('room')
-    patient_fio = request.POST.get('patient_fio')
-    date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
-    callback_number = request.POST.get('callback_number')
+    if( request.POST.get('street') != None):
+        street = request.POST.get('street')
+    else:
+        street = None
+    if( request.POST.get('number') != None):
+        number = request.POST.get('number')
+    else:
+        number = None
+    if( request.POST.get('building') != None):    
+        building = request.POST.get('building')
+    else:
+        building = None
+    if( request.POST.get('room') != None):
+        room = request.POST.get('room')
+    else:
+        room = None
+    if( request.POST.get('patient_fio') != None):
+        patient_fio = request.POST.get('patient_fio')
+    else:
+        patient_fio = None
+    if( request.POST.get('date_of_birth') != None): 
+        date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
+    if( request.POST.get('callback_number') != None):
+        callback_number = request.POST.get('callback_number')
+    else:
+        callback_number = None
 #    call_result = Call_result.objects.get(name="Обработан")
     call_operator = request.user
     address = Address(
@@ -69,7 +102,7 @@ def save(request):
         call_number=call_number,
         subject=subject,
         sub_subject=sub_subject,
-        registration_covid_date=registration_covid_date,
+#        registration_covid_date=registration_covid_date,
         manipulation=manipulation,
         hospital=hospital,
         city=city,
