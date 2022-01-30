@@ -126,7 +126,7 @@ class Call(models.Model):
 
 class Patient(models.Model):
     ''' Модель описывающая пациента обращения'''
-    patient_fio = models.CharField(max_length=400, help_text="Введите ФИО пациента")
+    patient_fio = models.CharField(max_length=1000, help_text="Введите ФИО пациента")
     date_of_birth = models.DateTimeField(null=True, blank=True)
     call = models.ForeignKey(
         Call,
