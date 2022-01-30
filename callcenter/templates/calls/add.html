@@ -22,7 +22,7 @@
                             </div> {% endcomment %}
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">dialpad</i>
-                                <input placeholder="81234567890" id="call_number" type="text" class="validate" name="call_number" required>
+                                <input placeholder="81234567890" id="call_number" type="text" class="validate" name="call_number" data-length="11" required>
                                 <label for="call_number">Номер звонящего</label>
                             </div>
                           </div>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">dialpad</i>
-                                <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number">
+                                <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number" data-length="11">
                                 <label for="callback_number">Контактный номер</label>
                             </div>
                           </div>
@@ -62,8 +62,8 @@
                                 <form class="col s12">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                    <textarea id="textarea1" class="materialize-textarea" name="question" required></textarea>
-                                    <label for="textarea1">Содержание (Суть) вопроса</label>
+                                    <textarea id="question" class="materialize-textarea" name="question" required></textarea>
+                                    <label for="question">Содержание (Суть) вопроса</label>
                                     </div>
                                 </div>
                                
@@ -129,15 +129,15 @@
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col s6 center"/>
+                                <div class="col s6 center">
                                   <label>
-                                    <input type="checkbox" name="complited"/>
+                                    <input type="checkbox" id="complited" name="complited"/>
                                     <span>Звонок обработан</span>
                                   </label>
                                 </div>
                                 <div class="col s6 center">
                                   <label>
-                                    <input type="checkbox" name="urgent"/>
+                                    <input type="checkbox" id="urgent" name="urgent"/>
                                     <span>Требует участия более опытного оператора</span>
                                   </label>
                                 </div>

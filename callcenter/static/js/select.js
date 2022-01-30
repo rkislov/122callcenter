@@ -7,7 +7,11 @@
 
   $(document).ready(function(){
     $('select').formSelect();
+    $('input#callback_number, input#call_number').characterCounter();
+    $('#question').val('');
+    M.textareaAutoResize($('#question'));
   });
 
-  $('#textarea1').val('');
-  M.textareaAutoResize($('#textarea1'));
+  // $(document).ready(function() {
+    
+  // });
