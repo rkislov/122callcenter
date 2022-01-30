@@ -17,7 +17,7 @@ SECRET_KEY = 'django-insecure-=rn+(hkyea^-2kt$%79+n(l9v9jx#-5ps!$75l#u76kk*7qu^*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', '10.0.16.234', '122.egov66.ru' ]
+ALLOWED_HOSTS = ['122.egov66.ru','127.0.0.1', '10.0.16.234'  ]
 
 
 # Application definition
@@ -131,6 +131,7 @@ EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS =  env('EMAIL_USE_TLS')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 ESTM_MIAC_EMAIL = env('ESTM_MIAC_EMAIL') 
 
@@ -155,4 +156,4 @@ if DEBUG:
     EMAIL_HOST_USER = ''
     EMAIL_HOST_PASSWORD = ''
     EMAIL_USE_TLS = False
-    DEFAULT_FROM_EMAIL = 'testing@example.com'
+    DEFAULT_FROM_EMAIL = '122@egov66.ru'
