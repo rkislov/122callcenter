@@ -1,5 +1,14 @@
+from email import message
+from django.core.mail import EmailMessage
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template import Context
+from django.template.loader import get_template
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from callcenter.settings import EMAIL_HOST_USER
 
 
 class Subject(models.Model):
@@ -57,6 +66,7 @@ class Address(models.Model):
 class Hospital(models.Model):
     '''Модель описывающая названия'''
     name = models.CharField(max_length=200, help_text="Введите сокращенное название МО")
+    email = models.EmailField(blank=True,null=True)
 
     def __str__(self):
         '''Функция возвращает название'''
@@ -79,12 +89,14 @@ class Call(models.Model):
     subject = models.ForeignKey(
         Subject,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='subject'
     )
     sub_subject = models.ForeignKey(
         Sub_subject,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='sub_subject'
     )
     callback_number = models.CharField(max_length=11, help_text="Введите номер с которого для обратной связи")
     question = models.TextField()
@@ -92,50 +104,79 @@ class Call(models.Model):
     manipulation = models.ForeignKey(
         Manipulation,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='manipulation'
     )
     hospital = models.ForeignKey(
         Hospital,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='hospital'
     )
     city = models.ForeignKey(
         City,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='ciyt'
     )
     address = models.ForeignKey(
         Address,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='address'
     )
     call_result = models.ForeignKey(
         Call_result,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='call_result'
     )
     call_operator = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        related_name='call_operator'
     )
     complited = models.BooleanField(default=False)
     urgent = models.BooleanField(default=False)
 
 
 class Patient(models.Model):
-    ''' Модель описывающая пациента обращения'''
+    '''Модель описывающая пациента обращения'''
     patient_fio = models.CharField(max_length=1000, help_text="Введите ФИО пациента")
     date_of_birth = models.DateTimeField(null=True, blank=True)
     call = models.ForeignKey(
         Call,
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        related_name='call'
     )
 
     def __str__(self):
         '''Функция возвращает название'''
         return self.patient_fio
     
+@receiver(post_save, sender=Call)
+def hospital_notification(sender, instance, created, **kwargs):
+    if instance.hospital and instance.hospital.email:
+        call = instance
+        # call_number = call.call_number
+        # call_date = call.date
+        # message = get_template("emails/call_notification.html").render(Context({
+        #     'call_number': call_number,
+        #     'call_date': call_date
+        # }))
+        message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
+        message += f'суть обращения {call.question}'
+        message += f'просим связаться с заявителем и оказать ему помощь'
+        mail = EmailMessage(
+            subject="122 Горячая линия",
+            body=message,
+            from_email=EMAIL_HOST_USER,
+            to=[call.hospital.email],
+            reply_to=[EMAIL_HOST_USER],
+        )
+        mail.content_subtype = "html"
+        return mail.send()

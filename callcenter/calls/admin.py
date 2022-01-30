@@ -30,7 +30,6 @@ class CallAdmin(ImportExportModelAdmin):
         'sub_subject',
         'manipulation',
         'call_result',
-        'manipulation',
         'registration_covid_date',
         'subject',
         'sub_subject',
@@ -49,12 +48,20 @@ class CallAdmin(ImportExportModelAdmin):
     empty_value_display = '-пусто-'
     resource_class = CallResource
 
+
+class HospitalAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk',
+        'name',
+        'email'
+    )
+
 admin.site.register(Subject)
 admin.site.register(Sub_subject)
 admin.site.register(Patient)
 admin.site.register(Manipulation)
 admin.site.register(City)
-admin.site.register(Hospital)
+admin.site.register(Hospital, HospitalAdmin)
 admin.site.register(Call_result)
 admin.site.register(Address)
-admin.site.register(Call,CallAdmin)
+admin.site.register(Call, CallAdmin)

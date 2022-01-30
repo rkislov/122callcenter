@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 
 
+
+
 @login_required
 def index(request):
     calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
@@ -135,7 +137,7 @@ def save(request):
         urgent=urgent,
         )
     call.save()
-    if (request.POST.get(patient_fio) != None): 
+    if (request.POST.get('patient_fio') != None): 
         patient = Patient(
             patient_fio=patient_fio,
             date_of_birth=date_of_birth,
