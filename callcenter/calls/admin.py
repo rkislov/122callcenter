@@ -22,7 +22,6 @@ class CallAdmin(ImportExportModelAdmin):
         'registration_covid_date',
         'subject',
         'sub_subject',
-        'manipulation'
         )
     list_filter = (
         'date',
@@ -30,7 +29,24 @@ class CallAdmin(ImportExportModelAdmin):
         'subject',
         'sub_subject',
         'manipulation',
+        'call_result',
+        'manipulation',
+        'registration_covid_date',
+        'subject',
+        'sub_subject',
         )
+    # Добавляем интерфейс для поиска по тексту постов
+    search_fields = (
+        'call_number',
+        'date',
+        'hospital',
+        )
+    # Добавляем возможность фильтрации по дате
+    list_filter = (
+        'date',
+        )
+    # Это свойство сработает для всех колонок: где пусто — там будет эта строка
+    empty_value_display = '-пусто-'
     resource_class = CallResource
 
 admin.site.register(Subject)
