@@ -1,4 +1,4 @@
-from django.core.mail import EmailMessage
+from django.core.mail import utils,EmailMessage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template import Context
@@ -160,6 +160,7 @@ class Patient(models.Model):
 @receiver(post_save, sender=Call)
 def hospital_notification(sender, instance, created, **kwargs):
     if instance.hospital and instance.hospital.email:
+        utils.DNS_NAME._fqdn = "122.egov66.ru"
         call = instance
         # call_number = call.call_number
         # call_date = call.date
@@ -168,7 +169,7 @@ def hospital_notification(sender, instance, created, **kwargs):
         #     'call_date': call_date
         # }))
         message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
-        message += f'суть обращения {call.question}'
+        message += f'суть обращения {call.question} '
         message += f'просим связаться с заявителем и оказать ему помощь'
         mail = EmailMessage(
             subject="122 Горячая линия",
