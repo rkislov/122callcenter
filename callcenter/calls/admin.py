@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call
+from .models import Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call, Journal
 
 class CallResource(resources.ModelResource):
 
@@ -64,4 +64,5 @@ admin.site.register(City)
 admin.site.register(Hospital, HospitalAdmin)
 admin.site.register(Call_result)
 admin.site.register(Address)
+admin.site.register(Journal)
 admin.site.register(Call, CallAdmin)

@@ -1,6 +1,9 @@
+import datetime
+from email.policy import default
 from django.core.mail import utils,EmailMessage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.forms import BooleanField
 from django.template import Context
 from django.template.loader import get_template
 from django.db import models
@@ -156,7 +159,21 @@ class Patient(models.Model):
     def __str__(self):
         '''Функция возвращает название'''
         return self.patient_fio
-    
+
+class Journal(models.Model):
+    call = models.ForeignKey(
+        Call,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='call_jornaled'
+    )
+    message=models.CharField(max_length=1000)
+    date=models.DateTimeField(auto_now_add=True)
+    active=models.BooleanField(default=True)
+
+
+
 @receiver(post_save, sender=Call)
 def hospital_notification(sender, instance, created, **kwargs):
     if instance.hospital and instance.hospital.email:
@@ -169,6 +186,8 @@ def hospital_notification(sender, instance, created, **kwargs):
         #     'call_date': call_date
         # }))
         message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
+        if call.subject:
+            message += f'Тема обращения {call.subject.name} '
         message += f'суть обращения {call.question} '
         message += f'просим связаться с заявителем и оказать ему помощь'
         mail = EmailMessage(
@@ -179,4 +198,13 @@ def hospital_notification(sender, instance, created, **kwargs):
             reply_to=[EMAIL_HOST_USER],
         )
         mail.content_subtype = "html"
-        return mail.send()
+        mail.send()
+        journal_message=f'email отправлен на адрес {call.hospital.email}'
+        journal_call = call
+        journal_date = datetime.datetime.now().isoformat()
+        journal = Journal(
+            call=journal_call,
+            message=journal_message,
+            date=journal_date
+        )
+        return journal.save() 
