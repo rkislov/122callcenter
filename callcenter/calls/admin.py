@@ -34,15 +34,19 @@ class CallAdmin(ImportExportModelAdmin):
         'subject',
         'sub_subject',
         )
-    # Добавляем интерфейс для поиска по тексту постов
-    search_fields = (
-        'call_number',
-        'date',
-        'hospital',
-        )
+    # # Добавляем интерфейс для поиска по тексту постов
+    # search_fields = (
+    #     'call_number',
+    #     'date',
+    #     'hospital',
+    #     )
     # Добавляем возможность фильтрации по дате
     list_filter = (
         'date',
+        'subject',
+        'sub_subject',
+        'hospital',
+        'manipulation'
         )
     # Это свойство сработает для всех колонок: где пусто — там будет эта строка
     empty_value_display = '-пусто-'
