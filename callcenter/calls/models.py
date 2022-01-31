@@ -143,7 +143,13 @@ class Call(models.Model):
     complited = models.BooleanField(default=False)
     urgent = models.BooleanField(default=False)
     active=models.BooleanField(default=True)
-
+    
+    class Meta:
+        permissions = (
+            ("operator", "Оператор горячей линии"),
+            ("super_operator", "Супервайзер горячей линии"),
+            ("hospital_operator", "Оператор больницы"),
+            )
 
 class Patient(models.Model):
     '''Модель описывающая пациента обращения'''

@@ -1,13 +1,16 @@
 <nav class="light-blue lighten-1" role="navigation">
-  <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">122</a>
+  <div class="nav-wrapper container"><a id="logo-container" href="{% url 'calls:main' %}" class="brand-logo">122</a>
     <ul class="right hide-on-med-and-down">
       {% if user.is_authenticated %}
-     <li><a href="#">Главная</a></li>
-     <li><a href="{% url 'calls:add' %}">Добавить</a></li>
-     <li>{{ user.get_username }}</li>
-     <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>
+        <li><a href="{% url 'calls:main' %}">Главная</a></li>
+        <li><a href="{% url 'calls:main' %}">Добавить</a></li>
+        {% if perms.calls.view_hospital %}
+        <li><a href={% url 'calls:hospital_all' %}>Заявки</a></li>
+        {% endif %}
+        <li>{{ user.get_username }}</li>
+        <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>
       {% else %}
-     <li><a href="{% url 'login'%}?next={{request.path}}">Вход</a></li>
+        <li><a href="{% url 'login'%}?next={{request.path}}">Вход</a></li>
       {% endif %} 
 
     </ul>
@@ -15,8 +18,11 @@
       <ul id="nav-mobile" class="sidenav">
       {% if user.is_authenticated %}
      <li>{{ user.get_username }}</li>
-     <li><a href="#">Главная</a></li>
+     <li><a href="{% url 'calls:main' %}">Главная</a></li>
      <li><a href="{% url 'calls:add' %}">Добавить</a></li>
+     {% if perms.calls.view_hospital %}
+     <li><a href={% url 'calls:hospital_all' %}>Заявки</a></li>
+     {% endif %}
      <li>{{ user.get_username }}</li>
      <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>
       {% else %}

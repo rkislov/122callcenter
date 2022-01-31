@@ -1,3 +1,6 @@
+import email
+from multiprocessing import context
+from re import template
 from django.shortcuts import render, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call 
@@ -5,6 +8,7 @@ import datetime
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import permission_required
 
 
 
@@ -39,11 +43,20 @@ def add(request):
     }
     return render(request, template, context)
 
+@login_required
+def show(request, id):
+    template = 'calls/show.html'
+    call = Call.objects.get(pk=id)
+    context = {
+        'call': call,
+    }
+    return render(request, template, context)
+
 
 @login_required
 def save(request):
     date = datetime.datetime.now().isoformat()
-    call_number = request.POST.get('call_number')
+    call_number = request.POST.get('call_number').strip()
     if( request.POST.get('subject') != None):
         subject = Subject.objects.get(id=request.POST.get('subject'))
     else:
@@ -88,13 +101,13 @@ def save(request):
     if( request.POST.get('date_of_birth') == '' ):
         date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
     else:
-        date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth'), '%d.%m.%Y').isoformat()
+        date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth').strip(), '%d.%m.%Y').isoformat()
     if( request.POST.get('registration_covid_date') == ''): 
          registration_covid_date = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
     else:
-         registration_covid_date = datetime.datetime.strptime(request.POST.get('registration_covid_date'), '%d.%m.%Y').isoformat()    
+         registration_covid_date = datetime.datetime.strptime(request.POST.get('registration_covid_date').strip(), '%d.%m.%Y').isoformat()    
     if( request.POST.get('callback_number') != None):
-        callback_number = request.POST.get('callback_number')
+        callback_number = request.POST.get('callback_number').strip()
     else:
         callback_number = None
     if( request.POST.get('call_result') != None):
@@ -151,3 +164,25 @@ def save(request):
     
 
     return HttpResponseRedirect("/")
+
+@login_required
+@permission_required('calls.view_hospital')
+def hospital_all(request):
+    hospital = Hospital.objects.get(email=request.user.email)
+    template = "hospitals/index.html"
+    calls = Call.objects.filter(hospital=hospital).select_related('call_result').order_by('-date')[:10]
+    context = {
+        "hospital": hospital.name,
+        "calls":calls
+    }
+    return render(request,template,context)
+
+@login_required
+@permission_required('calls.view_hospital')
+def hospital_show(request,pk):
+    template = 'calls/show.html'
+    call = Call.objects.filter(pk=pk).select_related('hospital').select_related('subject').select_related('sub_subject').select_related('manipulation').select_related('city').select_related('address')
+    context = {
+        'call': call,
+    }
+    return render(request, template, context)

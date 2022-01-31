@@ -16,7 +16,7 @@
           <tr>
               <th>Время звонка</th>
               <th>Номер звонящего</th>
-             <th>Статус</th> 
+              <th>Статус</th> 
               <th></th>
           </tr>
         </thead>
@@ -33,7 +33,9 @@
                 {% endif %}
                 
             </td>
-            <td></td>
+            <td>
+              <a href={% url 'calls:show' id=call.id %}> <i class="material-icons">assignment</i></a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
