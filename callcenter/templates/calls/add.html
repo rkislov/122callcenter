@@ -129,16 +129,24 @@
                               </div>
                               <div class="row">
                                 <div class="col s6 center">
-                                  <label>
-                                    <input type="checkbox" id="complited" name="complited"/>
-                                    <span>Звонок обработан</span>
-                                  </label>
+                             
+                                    <label>
+                                      
+                                      <input type="checkbox" name="complited">
+                                      <span>Обработано</span>
+                                     
+                                    </label>
+                                  
                                 </div>
                                 <div class="col s6 center">
-                                  <label>
-                                    <input type="checkbox" id="urgent" name="urgent"/>
-                                    <span>Требует участия более опытного оператора</span>
-                                  </label>
+                                  
+                                    <label>
+                                     
+                                      <input type="checkbox" name="urgent">
+                                      <span>Требует внимание старшего оператора</span>
+                                    
+                                    </label>
+                                  
                                 </div>
                               </div>
                     </div>
@@ -154,6 +162,6 @@
 {% endblock content %}
 
 {% block js %}
-    <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+    {% comment %} <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script> {% endcomment %}
     <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
 {% endblock js%}
