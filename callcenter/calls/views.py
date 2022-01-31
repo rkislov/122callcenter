@@ -192,9 +192,16 @@ def save(request):
         # }))
         message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
         if call.subject:
-            message += f'Тема обращения {call.subject.name} '
-        message += f'суть обращения {call.question} '
-        message += f'просим связаться с заявителем и оказать ему помощь'
+            message += f'Тема обращения {call.subject.name} \n'
+        message += f'суть обращения {call.question} \n'
+        message += f'просим связаться с заявителем и оказать ему помощь, '
+        message += f'более подробная информация предоставлена на странице вашей больницы \n'
+        message += f'https://122.egov66.ru/hospital/call/{call.id}  \n'
+        message += f'ваш логин это первая чать вашего email адреса \n'
+        message += f'для получения пароля проидите пожалуйста процедуру сброса пароля'
+
+
+
         mail = EmailMessage(
             subject="122 Горячая линия",
             body=message,
