@@ -109,7 +109,10 @@ def save(request):
         urgent = True
     else:
         urgent = False
-   
+    if (complited is True and hospital is None):
+        active = False
+    else:
+        active = True
     
     call_operator = request.user
     address = Address(
@@ -135,6 +138,7 @@ def save(request):
         call_operator=call_operator,
         complited=complited,
         urgent=urgent,
+        active=active,
         )
     call.save()
     if (request.POST.get('patient_fio') != None): 
