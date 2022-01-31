@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    <div class=raw>
+        <h3>Личный кабинет {{hospital}}</h3>
+    </div>
+    <div class="row center">
+      <a href="{% url 'calls:add' %}" id="download-button" class="btn-large waves-effect waves-light orange">Добавить</a>
+    </div>
+    <br><br>
+    {% if calls %} 
+    <div class="raw">
+      <table class="highlight">
+        <thead>
+          <tr>
+              <th>Время звонка</th>
+              <th>Номер звонящего</th>
+             <th>Статус</th> 
+              <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for call in  calls %}
+          <tr>
+            <td>{{call.date| date:"d.m.Y"}}</td>
+            <td>{{call.call_number}}</td>
+            <td>{% if call.complited == True %}
+                  Обработан
+                {% else %}
+                  Требуется перезвонить
+                {% endif %}
+                
+            </td>
+            <td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="row">
+      <div class="col s6 m6 offset-m3">
+        <div class="card light-blue">
+          <div class="card-content white-text">
+            <p class="center">Сегодня вами не было принято звонков</p>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock content %}

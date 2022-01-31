@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    <div class="col s12 m7">
+        <h2 class="header">Информация о звонке {{call.call_number}}</h2>
+        <form method="post" action="{% url 'calls:save' %}">
+            {% csrf_token %}
+            <div class="card horizontal">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <div class="row">
+                            {% comment %} <div class="input-field col s6">
+                                <i class="material-icons prefix">event</i>
+                                <input type="text" id="date" class="datepicker" name="date">
+                                <label for="date">Дата обращения</label>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="input-field col s6">
+                                <i class="material-icons prefix">dialpad</i>
+                                <input placeholder="81234567890" id="call_number" type="text" class="validate" name="call_number" data-length="12" disabled value="call.call_number">
+                                <label for="call_number">Номер звонящего</label>
+                            </div>
+                          </div> {% endcomment %}
+                          {% if  call.subject%}
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Тема" id="subject" type="text" class="validate" name="subject"  disabled value="{{call.subject}}">
+                                <label for="subject">Тема</label>
+                              </div>
+                          </div>
+                          {% else %}
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <div class="input-field col s12">
+                                    <input placeholder="Тема" id="subject" type="text" class="validate" name="subject"  disabled value="Не указано">
+                                    <label for="subject">Тема</label>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endif %}
+                          {% if  call.sub_subject%}
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Под тема" id="sub_subject" type="text" class="validate" name="sub_subject"  disabled value="{{call.sub_subject}}">
+                                <label for="sub_subject">Под тема</label>
+                              </div>
+                          </div>
+                          {% else %}
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <div class="input-field col s12">
+                                    <input placeholder="Под тема" id="sub_subject" type="text" class="validate" name="sub_subject"  disabled value="Не указано">
+                                    <label for="sub_subject">Под тема</label>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endif %}
+                          <div class="row">
+                          <div class="input-field col s6">
+                                <i class="material-icons prefix">event</i>
+                                <input type="text" id="date1" class="datepicker" name="registration_covid_date" disabled value={{call.registration_covid_date| date:"d.m.Y"}}>
+                                <label for="date1">Дата регистрации COVID-19</label>
+                            </div>
+                            {% if call.callback_number %}
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">dialpad</i>
+                                <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number" disabled value={{call.callback_number}}>
+                                <label for="callback_number">Контактный номер</label>
+                            </div>
+                          </div>
+                          {% else %}
+                          <div class="input-field col s6">
+                            <i class="material-icons prefix">dialpad</i>
+                            <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number" disabled value="Не указано">
+                            <label for="callback_number">Контактный номер</label>
+                        </div>
+                      </div>
+                          {% endif %}
+                            <div class="row">
+                                {% if call.question %}
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                    <textarea id="question" class="materialize-textarea" name="question" required>{{call.question}}</textarea>
+                                    <label for="question">Содержание (Суть) вопроса</label>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                    <textarea id="question" class="materialize-textarea" name="question" disabled required>Не указано</textarea>
+                                    <label for="question">Содержание (Суть) вопроса</label>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                {% if call.manipulation %}
+                                <div class="input-field col s12">
+                                        <input placeholder="Произведенная консультация" id="manipulation" type="text" class="validate" name="manipulation"  disabled value="{{call.manipulation}}">
+                                        <label for="manipulation">Произведенная консультация</label>
+                                </div>
+                                  {% else %}
+                                <div class="input-field col s12">
+                                    <input placeholder="Произведенная консультация" id="manipulation" type="text" class="validate" name="manipulation"  disabled value="Не указано">
+                                    <label for="manipulation">Произведенная консультация</label>
+                                </div>
+                                  {% endif %}
+                              </div>
+                              <div class="row">
+                                {% if call.manipulation %}
+                                <div class="input-field col s12">
+                                        <input placeholder="Обращение в МО" id="hospital" type="text" class="validate" name="hospital"  disabled value="{{call.hospital}}">
+                                        <label for="hospital">Обращение в МО</label>
+                                </div>
+                                  {% else %}
+                                <div class="input-field col s12">
+                                    <input placeholder="Обращение в МО" id="hospital" type="text" class="validate" name="hospital"  disabled value="Не указано">
+                                    <label for="hospital">Обращение в МО</label>
+                                </div>
+                                  {% endif %}
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio">
+                                    <label for="patient_fio">ФИО пациента</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">event</i>
+                                    <input type="text" id="date2" class="datepicker" name="date_of_birth">
+                                    <label for="date2">Дата рождения</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s12">
+                                    <select name="city">
+                                      <option value="" disabled selected>Город</option>
+                                      {% for city in citys %}
+                                      <option value="{{ city.id }}">{{ city.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="проспект Ленина" id="street" type="text" class="validate" name="street">
+                                    <label for="street">Улица</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input placeholder="74" id="number" type="text" class="validate" name="number">
+                                    <label for="street">Номер дома</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input placeholder="74" id="building" type="text" class="validate" name="building">
+                                    <label for="building">Корпус</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input placeholder="74" id="room" type="text" class="validate" name="room">
+                                    <label for="room">Квартира</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col s6 center">
+                                  <label>
+                                    <input type="checkbox" id="complited" name="complited"/>
+                                    <span>Звонок обработан</span>
+                                  </label>
+                                </div>
+                                <div class="col s6 center">
+                                  <label>
+                                    <input type="checkbox" id="urgent" name="urgent"/>
+                                    <span>Требует участия более опытного оператора</span>
+                                  </label>
+                                </div>
+                              </div>
+                    </div>
+                    <div class="card-action">
+                    </div>
+                    <input class="waves-effect waves-light btn" type="submit" value="Сохранить" />
+                </div>
+            </div>
+        </form>
+      </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+    {% comment %} <script type="text/javascript" src="{% static 'js/select.js' %}"></script> {% endcomment %}
+{% endblock js%}
