@@ -47,8 +47,10 @@ def add(request):
 def show(request, id):
     template = 'calls/show.html'
     call = Call.objects.get(pk=id)
+    patient = Patient.objects.filter(call=call)
     context = {
         'call': call,
+        'patient': patient,
     }
     return render(request, template, context)
 
