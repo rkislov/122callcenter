@@ -221,9 +221,11 @@ def hospital_all(request):
     hospital = Hospital.objects.get(email=request.user.email)
     template = "hospitals/index.html"
     calls = Call.objects.filter(hospital=hospital).filter(active=True).select_related('call_result').order_by('-date')[:10]
+    count = Call.objects.filter(hospital=hospital).filter(active=True).select_related('call_result').count()
     context = {
         "hospital": hospital.name,
-        "calls":calls
+        "calls":calls,
+        "count": count,
     }
     return render(request,template,context)
 
