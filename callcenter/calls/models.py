@@ -192,35 +192,35 @@ def hospital_notification(sender, instance, created, **kwargs):
         message = journal_create_message,
     )
     journal_create.save()
-    # if instance.hospital and instance.hospital.email:
-    #     utils.DNS_NAME._fqdn = "122.egov66.ru"
-    #     call = instance
-    #     # call_number = call.call_number
-    #     # call_date = call.date
-    #     # message = get_template("emails/call_notification.html").render(Context({
-    #     #     'call_number': call_number,
-    #     #     'call_date': call_date
-    #     # }))
-    #     message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
-    #     if call.subject:
-    #         message += f'Тема обращения {call.subject.name} '
-    #     message += f'суть обращения {call.question} '
-    #     message += f'просим связаться с заявителем и оказать ему помощь'
-    #     mail = EmailMessage(
-    #         subject="122 Горячая линия",
-    #         body=message,
-    #         from_email=EMAIL_HOST_USER,
-    #         to=[call.hospital.email],
-    #         reply_to=[EMAIL_HOST_USER],
-    #     )
-    #     mail.content_subtype = "html"
-    #     mail.send()
-    #     journal_message=f'email отправлен на адрес {call.hospital.email}'
-    #     journal_call = call
-    #     journal_date = datetime.datetime.now().isoformat()
-    #     journal = Journal(
-    #         call=journal_call,
-    #         message=journal_message,
-    #         date=journal_date
-    #     )
-        # return journal_create.save() 
+    if instance.hospital and instance.hospital.email:
+        utils.DNS_NAME._fqdn = "122.egov66.ru"
+        call = instance
+        # call_number = call.call_number
+        # call_date = call.date
+        # message = get_template("emails/call_notification.html").render(Context({
+        #     'call_number': call_number,
+        #     'call_date': call_date
+        # }))
+        message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
+        if call.subject:
+            message += f'Тема обращения {call.subject.name} '
+        message += f'суть обращения {call.question} '
+        message += f'просим связаться с заявителем и оказать ему помощь'
+        mail = EmailMessage(
+            subject="122 Горячая линия",
+            body=message,
+            from_email=EMAIL_HOST_USER,
+            to=[call.hospital.email],
+            reply_to=[EMAIL_HOST_USER],
+        )
+        mail.content_subtype = "html"
+        mail.send()
+        journal_message=f'email отправлен на адрес {call.hospital.email}'
+        journal_call = call
+        journal_date = datetime.datetime.now().isoformat()
+        journal = Journal(
+            call=journal_call,
+            message=journal_message,
+            date=journal_date
+        )
+        return journal.save() 
