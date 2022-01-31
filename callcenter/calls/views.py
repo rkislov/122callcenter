@@ -48,11 +48,11 @@ def show(request, id):
     template = 'calls/show.html'
     call = Call.objects.get(pk=id)
     patient = Patient.objects.filter(call=call)
-    journal = Journal.objects.filter(call=call)
+    journals = Journal.objects.filter(call=call)
     context = {
         'call': call,
         'patient': patient,
-        'journal': journal,
+        'journals': journals,
     }
     return render(request, template, context)
 

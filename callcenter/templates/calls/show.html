@@ -248,9 +248,27 @@
                 </div> {% endcomment %}
             </div>
         </form>
+        {% if journals %}
         <div class="raw center">
         <h4>События</h4>
-    </div>
+        <table class="center">
+            <thead>
+              <tr>
+                  <th class="center">Время</th>
+                  <th class="center">событие</th>  
+              </tr>
+            </thead>
+            <tbody>
+                {% for journal in journals %}
+                    <tr>
+                        <td class="center">{{journal.date | date:"d.m.Y G:i"}}</td>
+                        <td class="center">{{journal.message}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+      </div>
+      {% endif %}
       </div>
 </div>
 
