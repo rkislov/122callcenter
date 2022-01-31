@@ -3,7 +3,7 @@ from multiprocessing import context
 from re import template
 from django.shortcuts import render, get_list_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call 
+from .models import Journal, Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call 
 import datetime
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -48,9 +48,11 @@ def show(request, id):
     template = 'calls/show.html'
     call = Call.objects.get(pk=id)
     patient = Patient.objects.filter(call=call)
+    journal = Journal.objects.filter(call=call)
     context = {
         'call': call,
         'patient': patient,
+        'journal': journal,
     }
     return render(request, template, context)
 

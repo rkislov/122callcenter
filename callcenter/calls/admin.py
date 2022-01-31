@@ -33,6 +33,7 @@ class CallAdmin(ImportExportModelAdmin):
         'registration_covid_date',
         'subject',
         'sub_subject',
+        'call_operator',
         )
     # # Добавляем интерфейс для поиска по тексту постов
     # search_fields = (
@@ -46,7 +47,8 @@ class CallAdmin(ImportExportModelAdmin):
         'subject',
         'sub_subject',
         'hospital',
-        'manipulation'
+        'manipulation',
+        'call_operator',
         )
     # Это свойство сработает для всех колонок: где пусто — там будет эта строка
     empty_value_display = '-пусто-'
