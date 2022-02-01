@@ -56,7 +56,7 @@ class City(models.Model):
 class Address(models.Model):
     '''Модель адреса'''
     street = models.CharField(max_length=100, help_text="Введите адрес", null=True)
-    number = models.CharField(max_length=10, help_text="Введите номер дома", null=True)
+    number = models.CharField(max_length=12, help_text="Введите номер дома", null=True)
     building = models.CharField(max_length=10, help_text="Введите номер строения", null=True)
     room = models.CharField(max_length=10, help_text="Введите номер квартиры", null=True)
 
@@ -87,7 +87,7 @@ class Call_result(models.Model):
 class Call(models.Model):
     '''Модель описывает звонк'''
     date = models.DateTimeField(auto_now_add=True)
-    call_number = models.CharField(max_length=11, help_text="Введите номер с которого звонили")
+    call_number = models.CharField(max_length=12, help_text="Введите номер с которого звонили")
     subject = models.ForeignKey(
         Subject,
         on_delete=models.SET_NULL,
