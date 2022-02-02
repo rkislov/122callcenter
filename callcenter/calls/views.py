@@ -21,6 +21,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from .forms import AddForm
 
 
 
@@ -364,3 +365,24 @@ def hospital_wrong(request, id):
 #         'count': raw2[0]
 #     }
 #     return render(request, template, context)
+
+@login_required
+def add_new(request):
+    template = 'calls/add_new.html'
+    subjects = Subject.objects.all()
+    sub_subjects = Sub_subject.objects.all()
+    manipulations = Manipulation.objects.all()
+    citys = City.objects.all()
+    hospitals = Hospital.objects.all()
+    call_results = Call_result.objects.all()
+    context = {
+        'subjects': subjects,
+        'sub_subjects': sub_subjects,
+        'manipulations': manipulations,
+        'hospitals': hospitals,
+        'citys': citys,
+        'call_results': call_results
+
+    }
+  
+    return render(request, template, context)
