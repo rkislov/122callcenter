@@ -346,21 +346,21 @@ def hospital_wrong(request, id):
 
     return redirect('calls:hospital_all')
 
-@login_required
-def list_all(request):
-    cursor = connections['pbx'].cursor()
-    busy = "'BUSY'"
-    cursor.execute(f'SELECT * FROM asterisk.hist2 WHERE "DIALSTATUS"={busy}  and abandoned')
-    raw = cursor.fetchall()
-    cursor2 = connections['pbx'].cursor()
-    cursor2.execute('SELECT count(*) as cnALL FROM asterisk.hist2 WHERE abandoned and dt::date=current_date')
-    raw2 = cursor2.fetchone()
+# @login_required
+# def list_all(request):
+#     cursor = connections['pbx'].cursor()
+#     busy = "'BUSY'"
+#     cursor.execute(f'SELECT * FROM asterisk.hist2 WHERE "DIALSTATUS"={busy}  and abandoned')
+#     raw = cursor.fetchall()
+#     cursor2 = connections['pbx'].cursor()
+#     cursor2.execute('SELECT count(*) as cnALL FROM asterisk.hist2 WHERE abandoned and dt::date=current_date')
+#     raw2 = cursor2.fetchone()
 
-    print(raw)
-    #calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
-    template = 'list/index.html'
-    context = {
-        'calls': raw,
-        'count': raw2[0]
-    }
-    return render(request, template, context)
+#     print(raw)
+#     #calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
+#     template = 'list/index.html'
+#     context = {
+#         'calls': raw,
+#         'count': raw2[0]
+#     }
+#     return render(request, template, context)

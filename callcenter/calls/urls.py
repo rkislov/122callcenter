@@ -18,5 +18,5 @@ urlpatterns = [
     path('hospital/call/<int:pk>', views.HospitalShowCall.as_view(), name='hospital_show'),
     path('hospital/call/<int:id>/complite', views.hospital_complite, name='hospital_complite'),
     path('hospital/call/<int:id>/wrong', views.hospital_wrong, name='hospital_wrong'),
-    path('list/all', views.list_all, name='list_all'),
+    # path('list/all', views.list_all, name='list_all'),
 ]
