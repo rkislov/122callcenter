@@ -81,6 +81,14 @@ DATABASES = {
         'PASSWORD': env('DB_PASSWORD'),
         'HOST': env('DB_HOST'),
         'PORT': '',
+    },
+    'pbx':{
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
+        'NAME': env('DB_NAME_PBX'),
+        'USER': env('DB_USER_PBX'),
+        'PASSWORD': env('DB_PASSWORD_PBX'),
+        'HOST': env('DB_HOST_PBX'),
+        'PORT': '5432',
     }
 }
 
