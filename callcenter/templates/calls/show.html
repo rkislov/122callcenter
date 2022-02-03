@@ -75,7 +75,7 @@
                           </div>
                           {% endif %}
                           <div class="row">
-                              {% if call.registration_covid_date and call.registration_covid_date|date:"d.m.Y" > 01.01.1990 %}
+                              {% if call.registration_covid_date and call.registration_covid_date|date:"d.m.Y" != '01.01.1900' %}
                           <div class="input-field col s6">
                                 <i class="material-icons prefix">event</i>
                                 <input type="text" id="date1" class="datepicker" name="registration_covid_date" disabled value={{call.registration_covid_date| date:"d.m.Y"}}>
@@ -165,7 +165,7 @@
                                           <label for="hospital">ФИО пациента</label>
                                       </div>
                                         {% endif %}
-                                        {% if patient.date_of_birth and patient.date_of_birth|date:"d.m.Y" > 01.01.1990  %}
+                                        {% if patient.date_of_birth and patient.date_of_birth|date:"d.m.Y" != '01.01.1900'  %}
                                       <div class="input-field col s6">
                                           <i class="material-icons prefix">event</i>
                                           <input type="text" id="date2" class="datepicker" name="date_of_birth" disabled value="{{patient.date_of_birth| date:"d.m.Y"}}">
