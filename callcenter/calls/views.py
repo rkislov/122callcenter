@@ -44,7 +44,7 @@ def add(request):
     sub_subjects = Sub_subject.objects.all()
     manipulations = Manipulation.objects.all()
     citys = City.objects.all()
-    hospitals = Hospital.objects.all()
+    hospitals = Hospital.objects.all().order_by('name')
     call_results = Call_result.objects.all()
     context = {
         'subjects': subjects,
