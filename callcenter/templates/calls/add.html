@@ -8,7 +8,7 @@
 <div class="container">
     <div class="col s12 m7">
         <h2 class="header">Информация о звонке</h2>
-        <form method="post" action="{% url 'calls:save' %}">
+        <form method="post"  action="{% url 'calls:save' %}">
             {% csrf_token %}
             <div class="card horizontal">
                 <div class="card-stacked">
@@ -86,18 +86,21 @@
                                     </select>
                                   </div>
                               </div>
+                              <div class="add-person" id="form-container">
                               <div class="row">
                                 <div class="input-field col s6">
                                     <i class="material-icons prefix">account_circle</i>
-                                    <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio">
+                                    <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio[]">
                                     <label for="patient_fio">ФИО пациента</label>
                                 </div>
                                 <div class="input-field col s6">
                                     <i class="material-icons prefix">event</i>
-                                    <input type="text" id="date2" class="datepicker" name="date_of_birth">
+                                    <input type="text" id="date2" class="datepicker" name="date_of_birth[]">
                                     <label for="date2">Дата рождения</label>
                                 </div>
                               </div>
+                            </div>
+                              <button class="btn-floating btn-small waves-effect waves-light blue" id="add-person-form" type="button"><i class="material-icons">add</i></button>
                               <div class="row">
                                 <div class="input-field col s12">
                                     <select name="city">
@@ -148,10 +151,11 @@
                                   
                                 </div>
                               </div>
+                              <input type="hidden" id="TOTAL_FORMS" name="total_forms" value="1"/>
                     </div>
-                    <div class="card-action">
-                    </div>
-                    <input class="waves-effect waves-light btn" type="submit" value="Сохранить" />
+                    <div class="card-action center">
+                    
+                    <input class="waves-effect waves-light btn-large" type="submit" value="Сохранить" />
                 </div>
             </div>
         </form>
@@ -163,4 +167,5 @@
 {% block js %}
     {% comment %} <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script> {% endcomment %}
     <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/form.js' %}"></script>
 {% endblock js%}

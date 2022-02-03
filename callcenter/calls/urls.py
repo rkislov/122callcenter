@@ -10,7 +10,6 @@ urlpatterns = [
     # Главная страница
     path('', views.index, name='main'),
     path('call/add', views.add, name='add'),
-    path('call/add_new', views.add_new, name='add_new'),
     path('call/save', views.save, name='save'),
     path('call/<int:id>', views.show, name='show'),
    # path('hospital/all', views.hospital_all, name='hospital_all'),

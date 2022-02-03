@@ -112,14 +112,10 @@ def save(request):
         room = request.POST.get('room')
     else:
         room = None
-    if (request.POST.get('patient_fio') != None):
-        patient_fio = request.POST.get('patient_fio')
-    else:
-        patient_fio = None
-    if (request.POST.get('date_of_birth') == '' ):
-        date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
-    else:
-        date_of_birth = datetime.datetime.strptime(request.POST.get('date_of_birth').strip(), '%d.%m.%Y').isoformat()
+    # if (request.POST.get('patient_fio') != None):
+    #     patient_fio = request.POST.get('patient_fio')
+    # else:
+        # patient_fio = None
     if (request.POST.get('registration_covid_date') == ''): 
          registration_covid_date = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
     else:
@@ -176,13 +172,21 @@ def save(request):
         active=active,
         )
     call.save()
-    if (request.POST.get('patient_fio') != None): 
-        patient = Patient(
-            patient_fio=patient_fio,
-            date_of_birth=date_of_birth,
-            call=call
-        )
-        patient.save()
+    patient_fio_array = request.POST.getlist('patient_fio[]')
+    patient_date_of_birth = request.POST.getlist('date_of_birth[]')
+    for i in range(0,int(request.POST.get('total_forms'))):
+        if (patient_fio_array[i] != None): 
+            if(patient_date_of_birth[i] == '' ):
+                    date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+            else:
+                date_of_birth = datetime.datetime.strptime(patient_date_of_birth[i].strip(), '%d.%m.%Y').isoformat()
+            patient = Patient(
+                patient_fio=patient_fio_array[i],
+                date_of_birth=date_of_birth,
+                call=call
+            )
+            patient.save()
+            
     journal_create_call = call
     journal_create_message = f'запись о вызове создана'
     journal_create_date = datetime.datetime.now().isoformat()
@@ -232,7 +236,6 @@ def save(request):
         )
         journal.save()
     return HttpResponseRedirect("/")
-
 
 @method_decorator(login_required, name='dispatch')
 class HospitalListCalls(PermissionRequiredMixin, ListView):
@@ -386,3 +389,4 @@ def add_new(request):
     }
   
     return render(request, template, context)
+
