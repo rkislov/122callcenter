@@ -18,5 +18,6 @@ urlpatterns = [
     path('hospital/call/<int:pk>', views.HospitalShowCall.as_view(), name='hospital_show'),
     path('hospital/call/<int:id>/complite', views.hospital_complite, name='hospital_complite'),
     path('hospital/call/<int:id>/wrong', views.hospital_wrong, name='hospital_wrong'),
+    path('ajax/load_sub_subject/', views.load_sub_subject, name='ajax_load_sub_subject'),
     # path('list/all', views.list_all, name='list_all'),
 ]

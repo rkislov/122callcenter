@@ -27,7 +27,7 @@
                           </div>
                           <div class="row">
                             <div class="input-field col s12">
-                                <select name="subject">
+                                <select name="subject" id="subject">
                                   <option value="" disabled selected>Тема обращения</option>
                                   {% for subject in subjects %}
                                     <option value="{{ subject.id }}">{{ subject.name }}</option>

@@ -34,6 +34,23 @@ $(document).ready(function() {
         $('#TOTAL_FORMS').val(parseInt(form_idx) -1 );
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
+    
+    $("#subject").change(function () {
+      var url = "/ajax/load_sub_subject/";  // get the url of the `load_cities` view
+      var subjectId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'subject': subjectId       // add the country id to the GET parameters
+        },
+        dataType: 'json',
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
 });
 
 // </div>

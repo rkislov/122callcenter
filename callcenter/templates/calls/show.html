@@ -151,30 +151,36 @@
                                     <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio">
                                     <label for="patient_fio">ФИО пациента</label>
                                 </div> {% endcomment %}
-                                {% if call.patient %}
-                                <div class="input-field col s6">
-                                        <input placeholder="ФИО пациента" id="patient_fio" type="text" class="validate" name="patient_fio"  disabled value="{{patient.patient_fio}}">
-                                        <label for="patient_fio">ФИО пациента</label>
-                                </div>
-                                  {% else %}
-                                <div class="input-field col s6">
-                                    <input placeholder="ФИО пациента" id="patient_fio" type="text" class="validate" name="patient_fio"  disabled value="Не указано">
-                                    <label for="hospital">ФИО пациента</label>
-                                </div>
+                                {%if patients %}
+                                {% for patient in patients %}
+                                    {% if patient %}
+                                  
+                                      <div class="input-field col s6">
+                                          <input placeholder="ФИО пациента" id="patient_fio" type="text" class="validate" name="patient_fio"  disabled value="{{patient.patient_fio}}">
+                                          <label for="patient_fio">ФИО пациента</label>
+                                      </div>
+                                        {% else %}
+                                      <div class="input-field col s6">
+                                          <input placeholder="ФИО пациента" id="patient_fio" type="text" class="validate" name="patient_fio"  disabled value="Не указано">
+                                          <label for="hospital">ФИО пациента</label>
+                                      </div>
+                                        {% endif %}
+                                        {% if patient.date_of_birth and patient.date_of_birth|date:"d.m.Y" > 01.01.1990  %}
+                                      <div class="input-field col s6">
+                                          <i class="material-icons prefix">event</i>
+                                          <input type="text" id="date2" class="datepicker" name="date_of_birth" disabled value="{{patient.date_of_birth| date:"d.m.Y"}}">
+                                          <label for="date2">Дата рождения</label>
+                                      </div>
+                                      {% else %}
+                                      <div class="input-field col s6">
+                                          <i class="material-icons prefix">event</i>
+                                          <input type="text" id="date2" class="datepicker" name="date_of_birth" disabled value="не указано">
+                                          <label for="date2">Дата рождения</label>
+                                      </div>
+                                  
                                   {% endif %}
-                                  {% if patient.date_of_birth and patient.date_of_birth|date:"d.m.Y" > 01.01.1990 %}
-                                <div class="input-field col s6">
-                                    <i class="material-icons prefix">event</i>
-                                    <input type="text" id="date2" class="datepicker" name="date_of_birth" disabled value="{{patient.date_of_birth| date:"d.m.Y"}}">
-                                    <label for="date2">Дата рождения</label>
-                                </div>
-                                {% else %}
-                                <div class="input-field col s6">
-                                    <i class="material-icons prefix">event</i>
-                                    <input type="text" id="date2" class="datepicker" name="date_of_birth" disabled value="не указано">
-                                    <label for="date2">Дата рождения</label>
-                                </div>
-                                {% endif %}
+                                {% endfor %}
+                              {% endif %}
                               </div>
                               <div class="row">
                                   {% if call.city %}

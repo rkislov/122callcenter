@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Journal, Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call 
 import datetime
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import permission_required
@@ -61,11 +61,11 @@ def add(request):
 def show(request, id):
     template = 'calls/show.html'
     call = Call.objects.get(pk=id)
-    patient = Patient.objects.filter(call=call)
+    patients = Patient.objects.filter(call=call)
     journals = Journal.objects.filter(call=call)
     context = {
         'call': call,
-        'patient': patient,
+        'patients': patients,
         'journals': journals,
     }
     return render(request, template, context)
@@ -305,9 +305,9 @@ class HospitalShowCall(PermissionRequiredMixin, DetailView):
         # В первую очередь получаем базовую реализацию контекста
         context = super(HospitalShowCall, self).get_context_data(**kwargs)
         call = Call.objects.get(pk=self.kwargs.get('pk'))
-        patient = Patient.objects.filter(call=call)
+        patients = Patient.objects.filter(call=call)
         journals = Journal.objects.filter(call=call)
-        context['patient'] = patient
+        context['patients'] = patients
         context['journals'] = journals
         return context
 
@@ -390,3 +390,10 @@ def add_new(request):
   
     return render(request, template, context)
 
+def load_sub_subject(request):
+    subject_id = request.GET.get('subject')
+    sub_subject = Sub_subject.objects.filter(subject=subject_id).order_by('name')
+    response= {
+        'data': sub_subject
+    }
+    return JsonResponse(response)
