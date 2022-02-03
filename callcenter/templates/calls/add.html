@@ -37,7 +37,7 @@
                           </div>
                           <div class="row">
                             <div class="input-field col s12">
-                                <select name="sub_subject">
+                                <select name="sub_subject" id="sub_select">
                                   <option value="" disabled selected>Подтема обращения</option>
                                   {% for sub_subject in sub_subjects %}
                                     <option value="{{ sub_subject.id }}">{{ sub_subject.name }}</option>
@@ -48,7 +48,7 @@
                           <div class="row">
                           <div class="input-field col s6">
                                 <i class="material-icons prefix">event</i>
-                                <input type="text" id="date1" class="datepicker" name="registration_covid_date">
+                                <input type="text" id="date" class="datepicker" name="registration_covid_date">
                                 <label for="date1">Дата регистрации COVID-19</label>
                             </div>
                             <div class="input-field col s6">
@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="input-field col s6">
                                     <i class="material-icons prefix">event</i>
-                                    <input type="text" id="date2" class="datepicker" name="date_of_birth[]">
+                                    <input type="text" id="date1" class="datepicker" name="date_of_birth[]">
                                     <label for="date2">Дата рождения</label>
                                 </div>
                               </div>
@@ -168,4 +168,5 @@
     {% comment %} <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script> {% endcomment %}
     <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.SimpleMask.js' %}"></script>
 {% endblock js%}

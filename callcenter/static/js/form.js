@@ -18,7 +18,7 @@ $(document).ready(function() {
                                 </div>
                                 <div class="input-field col s6">
                                     <i class="material-icons prefix">event</i>
-                                    <input type="text" id="date2" class="datepicker" name="date_of_birth[]">
+                                    <input type="text" id="date1" class="datepicker" name="date_of_birth[]">
                                     <label for="date2">Дата рождения</label>
                                 </div>
                               </div>
@@ -34,23 +34,50 @@ $(document).ready(function() {
         $('#TOTAL_FORMS').val(parseInt(form_idx) -1 );
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
+
+    $(document).ready
+(
+	function()
+	{
+		
+		// $('#call_number').simpleMask( { 'mask': ['#(###) ###-##-##'], });
+        $('#date').simpleMask( { 'mask': '##.##.####'                         ,  } );
+		$('#date0').simpleMask( { 'mask': '##.##.####'                         ,  } );
+        $('#date1').simpleMask( { 'mask': '##.##.####'                         ,  } );
+        $('#date2').simpleMask( { 'mask': '##.##.####'                         ,  } );
+        $('#date3').simpleMask( { 'mask': '##.##.####'                         ,  } );
+        $('#date4').simpleMask( { 'mask': '##.##.####'                         ,  } );
+		$('#frCpf' ).simpleMask( { 'mask': '###.###.###-##'                     , } );
+		$('#frCallback').simpleMask
+		(
+			{
+				'mask'       : '#####',
+				'nextInput'  : true,
+				'onComplete' : function(element)
+				{
+					console.log('onComplete', element);
+				}
+			}
+		);
+	}
+);
     
-    $("#subject").change(function () {
-      var url = "/ajax/load_sub_subject/";  // get the url of the `load_cities` view
-      var subjectId = $(this).val();  // get the selected country ID from the HTML input
+    // $("#subject").change(function () {
+    //   var url = "/ajax/load_sub_subject/";  // get the url of the `load_cities` view
+    //   var subjectId = $(this).val();  // get the selected country ID from the HTML input
 
-      $.ajax({                       // initialize an AJAX request
-        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-        data: {
-          'subject': subjectId       // add the country id to the GET parameters
-        },
-        dataType: 'json',
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
-        }
-      });
+    //   $.ajax({                       // initialize an AJAX request
+    //     url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    //     data: {
+    //       'subject': subjectId       // add the country id to the GET parameters
+    //     },
+    //     dataType: 'json',
+    //     success: function (data) {   // `data` is the return of the `load_cities` view function
+    //       $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
+    //     }
+    //   });
 
-    });
+    // });
 });
 
 // </div>
