@@ -25,9 +25,10 @@ class Subject(models.Model):
 class Sub_subject(models.Model):
     ''' Модель описывающая тип обращения'''
     name = models.CharField(max_length=200, help_text="Введите подпричину обращения")
-    genre = models.ForeignKey(
+    subject = models.ForeignKey(
         Subject,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='sub_subject'
         )
 
     def __str__(self):
@@ -92,7 +93,7 @@ class Call(models.Model):
         Subject,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='subject'
+        related_name='call'
     )
     sub_subject = models.ForeignKey(
         Sub_subject,
@@ -107,38 +108,38 @@ class Call(models.Model):
         Manipulation,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='manipulation'
+        related_name='call'
     )
     hospital = models.ForeignKey(
         Hospital,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='hospital'
+        related_name='call'
     )
     city = models.ForeignKey(
         City,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='ciyt'
+        related_name='call'
     )
     address = models.ForeignKey(
         Address,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='address'
+        related_name='call'
     )
     call_result = models.ForeignKey(
         Call_result,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='call_result'
+        related_name='call'
     )
     call_operator = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='call_operator'
+        related_name='call'
     )
     complited = models.BooleanField(default=False)
     urgent = models.BooleanField(default=False)

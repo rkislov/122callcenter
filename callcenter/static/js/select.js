@@ -12,6 +12,3 @@
     M.textareaAutoResize($('#question'));
   });
 
-  // $(document).ready(function() {
-    
-  // });

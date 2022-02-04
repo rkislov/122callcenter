@@ -391,9 +391,8 @@ def add_new(request):
     return render(request, template, context)
 
 def load_sub_subject(request):
-    subject_id = request.GET.get('subject')
-    sub_subject = Sub_subject.objects.filter(subject=subject_id).order_by('name')
-    response= {
-        'data': sub_subject
-    }
-    return JsonResponse(response)
+    subject_id = request.POST.get('subject_id')
+    subject = Subject.objects.filter(id=subject_id).first()
+    sub_subject = Sub_subject.objects.filter(subject=subject).order_by('name')
+
+    return JsonResponse(list(sub_subject.values('id','name')), safe=False)

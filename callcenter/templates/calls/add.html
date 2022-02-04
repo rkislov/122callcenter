@@ -27,7 +27,7 @@
                           </div>
                           <div class="row">
                             <div class="input-field col s12">
-                                <select name="subject" id="subject">
+                                <select id="subject">
                                   <option value="" disabled selected>Тема обращения</option>
                                   {% for subject in subjects %}
                                     <option value="{{ subject.id }}">{{ subject.name }}</option>
@@ -37,11 +37,11 @@
                           </div>
                           <div class="row">
                             <div class="input-field col s12">
-                                <select name="sub_subject" id="sub_select">
-                                  <option value="" disabled selected>Подтема обращения</option>
-                                  {% for sub_subject in sub_subjects %}
+                                <select id="sub_subject">
+                                  <option disabled selected>Подтема обращения</option>
+                                  {% comment %} {% for sub_subject in sub_subjects %}
                                     <option value="{{ sub_subject.id }}">{{ sub_subject.name }}</option>
-                                  {% endfor %}
+                                  {% endfor %} {% endcomment %}
                                 </select>
                               </div>
                           </div>
@@ -169,4 +169,27 @@
     <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/form.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.SimpleMask.js' %}"></script>
+    <script>
+    $("#subject").change(function () {
+          const subjectId = $(this).val();  // get the selected subject ID from the HTML dropdown list 
+          $.ajax({                       // initialize an AJAX request
+              type: "POST",
+              url: '{% url "calls:ajax_load_sub_subject" %}',
+              data: {
+                  'subject_id': subjectId,       // add the country id to the POST parameters
+                  'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+              },
+              success: function (data) {   // `data` is from `get_topics_ajax` view function
+                  let html_data = '<option value="">---------</option>';
+                  data.forEach(function (data) {
+                      html_data += `<option value="${data.id}">${data.name}</option>`
+                  });
+                  
+                  $("#sub_subject").html(html_data); // replace the contents of the topic input with the data that came from the server
+                  $('select').formSelect(); 
+                }
+                
+          });
+      });
+  </script>
 {% endblock js%}
