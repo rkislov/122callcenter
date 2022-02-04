@@ -3,7 +3,7 @@
     <ul class="right hide-on-med-and-down">
       {% if user.is_authenticated %}
         <li><a href="{% url 'calls:main' %}">Главная</a></li>
-        <li><a href="{% url 'calls:main' %}">Добавить</a></li>
+        <li><a href="{% url 'calls:add' %}">Добавить</a></li>
         {% if perms.calls.view_hospital %}
         <li><a href={% url 'calls:hospital_all' %}>Заявки</a></li>
         {% endif %}
