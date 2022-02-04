@@ -30,10 +30,17 @@
   const domain = 'meet.jit.si';
   const options = {
     roomName: 'video test',
-    width: 700,
-    height: 700,
+    width: "100%",
+    height: 300,
     parentNode: document.querySelector('#meet'),
+    configOverwrite:{
+      prejoinPageEnabled: false
+    },
   //  noSsl: false
+    userInfo:{
+      email: 'test@email.ru',
+      displayName: 'Test'
+    }
 
 };
 const api = new JitsiMeetExternalAPI(domain, options);
