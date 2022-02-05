@@ -78,7 +78,7 @@
                               </div>
                               <div class="row">
                                 <div class="input-field col s12">
-                                    <select name="hospital">
+                                    <select class="blue" name="hospital" searchable="Обращение в МО" searchable="выберите МО">
                                       <option value="" disabled selected>Обращение по МО</option>
                                       {% for hospital in hospitals %}
                                       <option value="{{ hospital.id }}">{{ hospital.name }}</option>
@@ -103,7 +103,7 @@
                               <button class="btn-floating btn-small waves-effect waves-light blue" id="add-person-form" type="button"><i class="material-icons">add</i></button>
                               <div class="row">
                                 <div class="input-field col s12">
-                                    <select name="city">
+                                    <select name="city" searchable="Город" searchable="выберите город">
                                       <option value="" disabled selected>Город</option>
                                       {% for city in citys %}
                                       <option value="{{ city.id }}">{{ city.name }}</option>
@@ -169,6 +169,7 @@
     <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/form.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.SimpleMask.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materializeselect.js' %}"></script>
     <script>
     $("#subject").change(function () {
           const subjectId = $(this).val();  // get the selected subject ID from the HTML dropdown list 
