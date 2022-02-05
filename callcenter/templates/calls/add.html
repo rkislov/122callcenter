@@ -27,7 +27,7 @@
                           </div>
                           <div class="row">
                             <div class="input-field col s12">
-                                <select id="subject">
+                                <select id="subject" name="subject">
                                   <option value="" disabled selected>Тема обращения</option>
                                   {% for subject in subjects %}
                                     <option value="{{ subject.id }}">{{ subject.name }}</option>
@@ -37,8 +37,8 @@
                           </div>
                           <div class="row">
                             <div class="input-field col s12">
-                                <select id="sub_subject">
-                                  <option disabled selected>Подтема обращения</option>
+                                <select id="sub_subject" name="sub_subject">
+                                  <option value="" disabled selected>Подтема обращения</option>
                                   {% comment %} {% for sub_subject in sub_subjects %}
                                     <option value="{{ sub_subject.id }}">{{ sub_subject.name }}</option>
                                   {% endfor %} {% endcomment %}

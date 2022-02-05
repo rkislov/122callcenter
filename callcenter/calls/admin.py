@@ -53,7 +53,7 @@ class CallAdmin(ImportExportModelAdmin):
     # Это свойство сработает для всех колонок: где пусто — там будет эта строка
     empty_value_display = '-пусто-'
     search_fields = [
-        'call_number'
+        'call_number',
     ]
     resource_class = CallResource
 
@@ -62,8 +62,10 @@ class HospitalAdmin(admin.ModelAdmin):
     list_display = (
         'pk',
         'name',
-        'email'
+        'email',
     )
+    
+  
 
 admin.site.register(Subject)
 admin.site.register(Sub_subject)
