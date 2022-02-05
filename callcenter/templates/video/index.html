@@ -23,15 +23,15 @@
 </div>
 {% endblock content %}
 {% block js %}
-<script src="https://meet.jit.si/external_api.js"></script>
+<script src="https://jitsi122.egov66.ru/external_api.js"></script>
 <script type"text/javascript">
   let api;
   const initIframeAPI = () => {
-  const domain = 'meet.jit.si';
+  const domain = 'jitsi122.egov66.ru';
   const options = {
     roomName: 'video test',
     width: "100%",
-    height: 300,
+    height: 500,
     parentNode: document.querySelector('#meet'),
     configOverwrite:{
       prejoinPageEnabled: false
@@ -41,6 +41,7 @@
       email: 'test@email.ru',
       displayName: 'Test'
     }
+    //jwt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJqaXRzaSIsImlzcyI6InZpZGVvY2FsbHMiLCJzdWIiOiJqaXRzaTEyMi5lZ292NjYucnUiLCJyb29tIjoiKiJ9.HOSkIqqQl4y8PZg2Jvsg-iybKFpffFt0gQHQ6a6N9BM
 
 };
 const api = new JitsiMeetExternalAPI(domain, options);
