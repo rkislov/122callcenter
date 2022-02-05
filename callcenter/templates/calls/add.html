@@ -181,7 +181,7 @@
                   'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
               },
               success: function (data) {   // `data` is from `get_topics_ajax` view function
-                  let html_data = '<option value="">---------</option>';
+                  let html_data = '<option value="" disabled>---------</option>';
                   data.forEach(function (data) {
                       html_data += `<option value="${data.id}">${data.name}</option>`
                   });
