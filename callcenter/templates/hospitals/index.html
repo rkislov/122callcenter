@@ -37,7 +37,7 @@
                 {% endif %}
                 
             </td>
-            <td><a href={% url 'calls:hospital_show' pk=call.pk %}> <i class="material-icons">assignment</i></a></td>
+            <td><a href={% url 'hospitals:show' pk=call.pk %}> <i class="material-icons">assignment</i></a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -50,7 +50,7 @@
                   <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">назад</a>
               {% endif %}
               <span class="page-current">
-                  страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                  страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
               </span>
               {% if page_obj.has_next %}
                   <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">вперед</a>

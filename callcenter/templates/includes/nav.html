@@ -5,7 +5,7 @@
         <li><a href="{% url 'calls:main' %}">Главная</a></li>
         <li><a href="{% url 'calls:add' %}">Добавить</a></li>
         {% if perms.calls.view_hospital %}
-        <li><a href={% url 'calls:hospital_all' %}>Заявки</a></li>
+        <li><a href={% url 'hospitals:all' %}>Заявки</a></li>
         {% endif %}
         <li>{{ user.get_username }}</li>
         <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>
@@ -21,7 +21,7 @@
      <li><a href="{% url 'calls:main' %}">Главная</a></li>
      <li><a href="{% url 'calls:add' %}">Добавить</a></li>
      {% if perms.calls.view_hospital %}
-     <li><a href={% url 'calls:hospital_all' %}>Заявки</a></li>
+     <li><a href={% url 'hospitals:all' %}>Заявки</a></li>
      {% endif %}
      <li>{{ user.get_username }}</li>
      <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>

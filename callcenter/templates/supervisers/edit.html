@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    {% if call.complited %}
+    <div class="raw">
+    <div class="text center">
+        <span class="new badge blue">Звонок обработан</span>
+    </div>
+    </div>
+    {% endif %}
+    {% if call.urgent %}
+    <div class="raw">
+    <div class="text center">
+        <span class="new badge red">Требует внимания старшего оператора</span>
+    </div>
+    </div>
+    {% endif %}
+    <div class="col s12 m7">
+      {% csrf_token %}
+        <h2 class="header">Информация о звонке {{call.call_number}}</h2>
+        <h4 class="header">от {{call.date|date:"d.m.Y H:i" }}</h4>
+        <form method="post"  action="{% url 'supervisers:update' %}">
+            <div class="card horizontal">
+                <div class="card-stacked">
+                    <div class="card-content">
+                          <div class="row">
+                            <input type="hidden" name="callid" value="{{call.id}}"/>
+                            <div class="input-field col s12">
+                                <select id="subject" name="subject">
+                                  {% if call.subject %}
+                                  <option value="{{ call.subject.id }}" selected>{{ call.subject }}</option> 
+                                  {% else %}
+                                  <option value="" disabled selected>Тема обращения</option>
+                                  {% endif %}
+                                  {% for subjec in subjects %}
+                                    <option value="{{ subjec.id }}">{{ subjec.name }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col s12">
+                                <select id="sub_subject" name="sub_subject">
+                                  {% if call.sub_subject %}
+                                  <option value="{{ call.sub_subject.id }}" selected>{{ call.sub_subject }}</option> 
+                                  {% else %}
+                                  <option value="" disabled selected>Под тема обращения</option>
+                                  {% endif %}
+                                  {% comment %} {% for sub_subject in sub_subjects %}
+                                    <option value="{{ sub_subject.id }}">{{ sub_subject.name }}</option>
+                                  {% endfor %} {% endcomment %}
+                                </select>
+                              </div>
+                          </div>
+                          <div class="row">
+                              {% if call.registration_covid_date and call.registration_covid_date|date:"d.m.Y" != '01.01.1990' %}
+                          <div class="input-field col s6">
+                                <i class="material-icons prefix">event</i>
+                                <input type="text" id="date1" class="datepicker" name="registration_covid_date" value={{call.registration_covid_date| date:"d.m.Y"}}>
+                                <label for="date1">Дата регистрации COVID-19</label>
+                           </div>
+                           {% else %}
+                           <div class="input-field col s6">
+                            <i class="material-icons prefix">event</i>
+                            <input type="text" id="date1" class="datepicker" name="registration_covid_date" value="не указано">
+                            <label for="date1">Дата регистрации COVID-19</label>
+                           </div>
+                           {% endif %}
+                            {% if call.callback_number %}
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">dialpad</i>
+                                <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number" value={{call.callback_number}}>
+                                <label for="callback_number">Контактный номер</label>
+                            </div>
+                          </div>
+                          {% else %}
+                          <div class="input-field col s6">
+                            <i class="material-icons prefix">dialpad</i>
+                            <input placeholder="81234567890" id="callback_number" type="text" class="validate" name="callback_number"  value="Не указано">
+                            <label for="callback_number">Контактный номер</label>
+                        </div>
+                      </div>
+                          {% endif %}
+                            <div class="row">
+                               
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                    <textarea id="question" class="materialize-textarea" name="question" required>{{call.question}}</textarea>
+                                    <label for="question">Содержание (Суть) вопроса</label>
+                                    </div>
+                                </div>
+                          
+                            </div>
+                            <div class="row">
+                              <div class="input-field col s12">
+                                  <select name="manipulation">
+                                    {% if call.manipulation %}
+                                    <option value="{{call.manipulation.id}}" selected>{{call.manipulation}}</option>
+                                    {% else %}
+                                    <option value="" disabled selected>Произведенная консультация</option>
+                                    {% endif %}
+                                    {% for manipulation in manipulations %}
+                                    <option value="{{ manipulation.id }}">{{ manipulation.name }}</option>
+                                  {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <div class="input-field col s12">
+                                  <select class="blue" name="hospital" searchable="Обращение в МО" searchable="выберите МО">
+                                    {% if call.hospital %}
+                                    <option value="{{call.hospital.id}}"  selected>{{call.hospital}}</option>
+                                    {% else %}
+                                    <option value="" disabled selected>Обращение по МО</option>
+                                    {% endif %}
+                                    {% for hospital in hospitals %}
+                                    <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+                                  {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                              <div class="row">
+                                {% comment %} <div class="input-field col s6">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input placeholder="Иванов Иван Иванович" id="patient_fio" type="text" class="validate" name="patient_fio">
+                                    <label for="patient_fio">ФИО пациента</label>
+                                </div> {% endcomment %}
+                                {%if patients %}
+                                  {% for patient in patients %}
+                                      {% if patient %}
+                                    
+                                        <div class="input-field col s6">
+                                            <input placeholder="ФИО пациента" id="patient_fio" type="text" class="validate" name="patient_fio"  value="{{patient.patient_fio}}">
+                                            <label for="patient_fio">ФИО пациента</label>
+                                        </div>
+                                          {% else %}
+                                        <div class="input-field col s6">
+                                            <input placeholder="ФИО пациента" id="patient_fio" type="text" class="validate" name="patient_fio"  value="Не указано">
+                                            <label for="hospital">ФИО пациента</label>
+                                        </div>
+                                          {% endif %}
+                                          {% if patient.date_of_birth and patient.date_of_birth|date:"d.m.Y" != '01.01.1990'  %}
+                                        <div class="input-field col s6">
+                                            <i class="material-icons prefix">event</i>
+                                            <input type="text" id="date2" class="datepicker" name="date_of_birth"  value="{{patient.date_of_birth| date:"d.m.Y"}}">
+                                            <label for="date2">Дата рождения</label>
+                                        </div>
+                                        {% else %}
+                                        <div class="input-field col s6">
+                                            <i class="material-icons prefix">event</i>
+                                            <input type="text" id="date2" class="datepicker" name="date_of_birth"  value="не указано">
+                                            <label for="date2">Дата рождения</label>
+                                        </div>
+                                    
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s12">
+                                    <select name="city" searchable="Город" searchable="выберите город">
+                                      {% if call.city %}
+                                      <option value="{{call.city.id}}" selected>{{call.city}}</option>
+                                      {% else %}
+                                      <option value="" disabled selected>Город</option>
+                                      {% endif %}
+                                      {% for city in citys %}
+                                      <option value="{{ city.id }}">{{ city.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s6">
+                                    {% if call.address.street %}
+                                    <input placeholder="проспект Ленина" id="street" type="text" class="validate" name="street"  value="{{call.address.street}}">
+                                    <label for="street">Улица</label>
+                                    {% else %}
+                                    <input placeholder="проспект Ленина" id="street" type="text" class="validate" name="street"  value="">
+                                    <label for="street">Улица</label>
+                                    {% endif %}
+                                </div>
+                                <div class="input-field col s2">
+                                    {% if call.address.number %}
+                                    <input placeholder="74" id="number" type="text" class="validate" name="number"  value="{{call.address.number}}">
+                                    <label for="street">Номер дома</label>
+                                    {% else %}
+                                    <input placeholder="74" id="number" type="text" class="validate" name="number"  value="">
+                                    <label for="street">Номер дома</label>
+                                    {% endif %}
+                                </div>
+                                <div class="input-field col s2">
+                                    {% if call.address.building %}
+                                    <input placeholder="74" id="building" type="text" class="validate" name="building"  value="{{ call.address.building}}">
+                                    <label for="building">Корпус</label>
+                                    {% else %}
+                                    <input placeholder="74" id="building" type="text" class="validate" name="building"  value="">
+                                    <label for="building">Корпус</label>
+                                    {% endif %}
+                                </div>
+                                <div class="input-field col s2">
+                                    {% if call.address.room %}
+                                    <input placeholder="74" id="room" type="text" class="validate" name="room"  value="{{call.address.room}}">
+                                    <label for="room">Квартира</label>
+                                    {% else %}
+                                    <input placeholder="74" id="room" type="text" class="validate" name="room" disabled value="">
+                                    <label for="room">Квартира</label>
+                                    {% endif %}
+                                </div>
+                              </div>
+                              {% comment %} <div class="row">
+                                <div class="col s6 center">
+                                  <label>
+                                    <input type="checkbox" id="complited" name="complited"/>
+                                    <span>Звонок обработан</span>
+                                  </label>
+                                </div>
+                                <div class="col s6 center">
+                                  <label>
+                                    <input type="checkbox" id="urgent" name="urgent"/>
+                                    <span>Требует участия более опытного оператора</span>
+                                  </label>
+                                </div>
+                              </div>
+                    </div>{% endcomment %}
+                  </div>
+                    <div class="card-action center">
+                  
+                      <button class="btn waves-effect waves-light blue" type="submit" value="">Сохранить</button>
+            </div>
+        
+      </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+    {% comment %} <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script> {% endcomment %}
+    <script type="text/javascript" src="{% static 'js/select.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.SimpleMask.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materializeselect.js' %}"></script>
+    <script>
+    $("#subject").change(function () {
+          const subjectId = $(this).val();  // get the selected subject ID from the HTML dropdown list 
+          $.ajax({                       // initialize an AJAX request
+              type: "POST",
+              url: '{% url "calls:ajax_load_sub_subject" %}',
+              data: {
+                  'subject_id': subjectId,       // add the country id to the POST parameters
+                  'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+              },
+              success: function (data) {   // `data` is from `get_topics_ajax` view function
+                  let html_data = '<option value="" disabled>---------</option>';
+                  data.forEach(function (data) {
+                      html_data += `<option value="${data.id}">${data.name}</option>`
+                  });
+                  
+                  $("#sub_subject").html(html_data); // replace the contents of the topic input with the data that came from the server
+                  $('select').formSelect(); 
+                }
+                
+          });
+      });
+  </script>
+{% endblock js%}

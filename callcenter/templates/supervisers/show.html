@@ -248,8 +248,9 @@
                   </div>
                     <div class="card-action center">
                   
-                    <a href="{% url 'hospitals:complite' id=call.id %}" class="waves-effect waves-light btn-small">Обработан</a> 
-                    <a href="{% url 'hospitals:wrong' id=call.id %}" class="waves-effect waves-light btn-small red">Записано ошибочно</a> 
+                      <a href="{% url 'supervisers:main' %}" class="waves-effect waves-light btn-small">Назад</a> 
+                      <a href="{% url 'supervisers:edit' pk=call.pk %}" class="waves-effect waves-light btn-small red">Редактировать</a>
+                     
             </div>
         {% if journals %}
         <div class="raw center">

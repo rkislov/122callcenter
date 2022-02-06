@@ -6,7 +6,7 @@ from re import template
 from unittest.mock import call
 from django.shortcuts import redirect, render, get_list_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Journal, Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call 
+from calls.models import Journal, Subject, Sub_subject, Patient, Manipulation, City, Hospital, Call_result, Address, Call 
 import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
@@ -21,60 +21,73 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from .forms import AddForm
 
 
 
+
+@method_decorator(login_required, name='dispatch')
+class SuperviserShowCall(PermissionRequiredMixin, ListView):
+    permission_required = 'calls.view_hospital'
+    model = Call
+    paginate_by = 10
+    context_object_name = 'calls'
+    template_name = "supervisers/index.html"
+    def get_queryset(self):
+        #hospital = Hospital.objects.get(email=self.request.user.email)
+        return Call.objects.select_related('call_result').order_by('-date')
+    def get_context_data(self, **kwargs):
+        # В первую очередь получаем базовую реализацию контекста
+        context = super(SuperviserShowCall, self).get_context_data(**kwargs)
+        # Добавляем новую переменную к контексту и инициализируем её некоторым значением
+        count = Call.objects.select_related('call_result').count()
+        context['count'] = count
+        #context['hospital'] = hospital
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class SuperviserShow(PermissionRequiredMixin, DetailView):
+    permission_required = 'calls.view_hospital'
+    model = Call
+    context_object_name = 'call'
+    template_name = 'supervisers/show.html'
+    def get_context_data(self, **kwargs):
+        # В первую очередь получаем базовую реализацию контекста
+        context = super(SuperviserShow, self).get_context_data(**kwargs)
+        call = Call.objects.get(pk=self.kwargs.get('pk'))
+        patients = Patient.objects.filter(call=call)
+        journals = Journal.objects.filter(call=call)
+        context['patients'] = patients
+        context['journals'] = journals
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class SuperviserEdit(PermissionRequiredMixin, DetailView):
+    permission_required = 'calls.view_hospital'
+    model = Call
+    context_object_name = 'call'
+    template_name = 'supervisers/edit.html'
+    def get_context_data(self, **kwargs):
+        # В первую очередь получаем базовую реализацию контекста
+        context = super(SuperviserEdit, self).get_context_data(**kwargs)
+        call = Call.objects.get(pk=self.kwargs.get('pk'))
+        patients = Patient.objects.filter(call=call)
+        subjects = Subject.objects.all()
+        manipulations = Manipulation.objects.all()
+        hospitals = Hospital.objects.all()
+        citys = City.objects.all()
+        context['subjects'] = subjects
+        context['manipulations'] = manipulations
+        context['hospitals'] = hospitals
+        context['patients'] = patients
+        context['citys'] = citys
+        return context
 
 
 @login_required
-def index(request):
-    calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
-    template = 'calls/index.html'
-    context = {
-        'calls': calls,
-    }
-    return render(request, template, context)
-
-
-@login_required
-def add(request):
-    template = 'calls/add.html'
-    subjects = Subject.objects.all()
-    sub_subjects = Sub_subject.objects.all()
-    manipulations = Manipulation.objects.all()
-    citys = City.objects.all()
-    hospitals = Hospital.objects.all().order_by('name')
-    call_results = Call_result.objects.all()
-    context = {
-        'subjects': subjects,
-        'sub_subjects': sub_subjects,
-        'manipulations': manipulations,
-        'hospitals': hospitals,
-        'citys': citys,
-        'call_results': call_results
-
-    }
-    return render(request, template, context)
-
-@login_required
-def show(request, id):
-    template = 'calls/show.html'
-    call = Call.objects.get(pk=id)
-    patients = Patient.objects.filter(call=call)
-    journals = Journal.objects.filter(call=call)
-    context = {
-        'call': call,
-        'patients': patients,
-        'journals': journals,
-    }
-    return render(request, template, context)
-
-
-@login_required
-def save(request):
-    date = datetime.datetime.now().isoformat()
-    call_number = request.POST.get('call_number').strip()
+def update(request):
+    # date = datetime.datetime.now().isoformat()
+    # call_number = request.POST.get('call_number').strip()
     if (request.POST.get('subject') != None):
         subject = Subject.objects.get(id=request.POST.get('subject'))
     else:
@@ -238,49 +251,3 @@ def save(request):
     return HttpResponseRedirect("/")
 
 
-# @login_required
-# def list_all(request):
-#     cursor = connections['pbx'].cursor()
-#     busy = "'BUSY'"
-#     cursor.execute(f'SELECT * FROM asterisk.hist2 WHERE "DIALSTATUS"={busy}  and abandoned')
-#     raw = cursor.fetchall()
-#     cursor2 = connections['pbx'].cursor()
-#     cursor2.execute('SELECT count(*) as cnALL FROM asterisk.hist2 WHERE abandoned and dt::date=current_date')
-#     raw2 = cursor2.fetchone()
-
-#     print(raw)
-#     #calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
-#     template = 'list/index.html'
-#     context = {
-#         'calls': raw,
-#         'count': raw2[0]
-#     }
-#     return render(request, template, context)
-
-@login_required
-def add_new(request):
-    template = 'calls/add_new.html'
-    subjects = Subject.objects.all()
-    sub_subjects = Sub_subject.objects.all()
-    manipulations = Manipulation.objects.all()
-    citys = City.objects.all()
-    hospitals = Hospital.objects.all()
-    call_results = Call_result.objects.all()
-    context = {
-        'subjects': subjects,
-        'sub_subjects': sub_subjects,
-        'manipulations': manipulations,
-        'hospitals': hospitals,
-        'citys': citys,
-        'call_results': call_results
-
-    }
-  
-    return render(request, template, context)
-
-def load_sub_subject(request):
-    subject_id = request.POST.get('subject_id')
-    subject = Subject.objects.filter(id=subject_id).first()
-    sub_subject = Sub_subject.objects.filter(subject=subject).order_by('name')
-
-    return JsonResponse(list(sub_subject.values('id','name')), safe=False)

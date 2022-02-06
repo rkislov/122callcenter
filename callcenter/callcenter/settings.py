@@ -24,6 +24,9 @@ ALLOWED_HOSTS = ['122.egov66.ru','127.0.0.1', '10.0.16.234'  ]
 
 INSTALLED_APPS = [
     'calls',
+    'hospitals',
+    'supervisers',
+    'video',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
