@@ -143,20 +143,23 @@ def update(request):
         call_result = None
     if (request.POST.get('complited') == 'on'):
         complited = True
-    elif (request.POST.get('complited') == 'off'):
-        complited = False
-    else:
-        complited = False 
-    if (request.POST.get('urgent') == 'on'):
-        urgent = True
-    elif (request.POST.get('urgent') == 'off'):
-        urgent = False 
-    else:
-        urgent = False
-    if (complited is True and hospital is None):
-        active = False
-    else:
-        active = True
+    # elif (request.POST.get('complited') == 'off'):
+    #     complited = False
+    # else:
+    #     complited = False 
+    # if (request.POST.get('urgent') == 'on'):
+    #     urgent = True
+    # elif (request.POST.get('urgent') == 'off'):
+    #     urgent = False 
+    # else:
+    #     urgent = False
+    # if (complited is True and hospital is None):
+    #     active = False
+    # else:
+    #     active = True
+    urgent=False
+    complited=True
+    
     
     call_operator = request.user
     call=Call.objects.get(pk=request.POST.get('callid'))
