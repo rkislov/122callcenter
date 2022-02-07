@@ -2,7 +2,7 @@
   <div class="nav-wrapper container"><a id="logo-container" href="{% url 'calls:main' %}" class="brand-logo">122</a>
     <ul class="right hide-on-med-and-down">
       {% if user.is_authenticated %}
-      {% if perms.calls.view_call %}
+      {% if perms.calls.view_call or perms.calls.change_call %}
       <li><a href="{% url 'calls:main' %}">Главная</a></li>
       <li><a href="{% url 'calls:add' %}">Добавить</a></li>
       {% endif %}

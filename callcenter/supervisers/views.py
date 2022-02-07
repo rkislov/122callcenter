@@ -159,7 +159,6 @@ def update(request):
         active = True
     
     call_operator = request.user
-    
     call=Call.objects.get(pk=request.POST.get('callid'))
     
         # date=date,
