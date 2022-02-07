@@ -2,10 +2,15 @@
   <div class="nav-wrapper container"><a id="logo-container" href="{% url 'calls:main' %}" class="brand-logo">122</a>
     <ul class="right hide-on-med-and-down">
       {% if user.is_authenticated %}
-        <li><a href="{% url 'calls:main' %}">Главная</a></li>
-        <li><a href="{% url 'calls:add' %}">Добавить</a></li>
+      {% if perms.calls.view_call %}
+      <li><a href="{% url 'calls:main' %}">Главная</a></li>
+      <li><a href="{% url 'calls:add' %}">Добавить</a></li>
+      {% endif %}
         {% if perms.calls.view_hospital %}
         <li><a href={% url 'hospitals:all' %}>Заявки</a></li>
+        {% endif %}
+        {% if perms.calls.change_call %}
+        <li><a href={% url 'supervisers:main' %}>Списки</a></li>
         {% endif %}
         <li>{{ user.get_username }}</li>
         <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>
@@ -18,10 +23,15 @@
       <ul id="nav-mobile" class="sidenav">
       {% if user.is_authenticated %}
      <li>{{ user.get_username }}</li>
+     {% if perms.calls.view_call %}
      <li><a href="{% url 'calls:main' %}">Главная</a></li>
      <li><a href="{% url 'calls:add' %}">Добавить</a></li>
+     {% endif %}
      {% if perms.calls.view_hospital %}
      <li><a href={% url 'hospitals:all' %}>Заявки</a></li>
+     {% endif %}
+     {% if perms.calls.change_call %}
+     <li><a href={% url 'supervisers:main' %}>Списки</a></li>
      {% endif %}
      <li>{{ user.get_username }}</li>
      <li><a href="{% url 'logout'%}?next={{request.path}}">Выход</a></li>

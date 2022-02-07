@@ -27,7 +27,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 
 @method_decorator(login_required, name='dispatch')
 class SuperviserShowCall(PermissionRequiredMixin, ListView):
-    permission_required = 'calls.view_hospital'
+    permission_required = 'calls.change_call'
     model = Call
     paginate_by = 10
     context_object_name = 'calls'
@@ -46,7 +46,7 @@ class SuperviserShowCall(PermissionRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class SuperviserShow(PermissionRequiredMixin, DetailView):
-    permission_required = 'calls.view_hospital'
+    permission_required = 'calls.change_call'
     model = Call
     context_object_name = 'call'
     template_name = 'supervisers/show.html'
@@ -63,7 +63,7 @@ class SuperviserShow(PermissionRequiredMixin, DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class SuperviserEdit(PermissionRequiredMixin, DetailView):
-    permission_required = 'calls.view_hospital'
+    permission_required = 'calls.change_call'
     model = Call
     context_object_name = 'call'
     template_name = 'supervisers/edit.html'
@@ -159,56 +159,73 @@ def update(request):
         active = True
     
     call_operator = request.user
-    address = Address(
-        street=street,
-        number=number,
-        building=building,
-        room=room
-    )
-    address.save()
-    call = Call(
-        date=date,
-        call_number=call_number,
-        subject=subject,
-        sub_subject=sub_subject,
-        registration_covid_date=registration_covid_date,
-        manipulation=manipulation,
-        hospital=hospital,
-        city=city,
-        question=question,
-        address=address,
-        callback_number=callback_number,
-        call_result=call_result,
-        call_operator=call_operator,
-        complited=complited,
-        urgent=urgent,
-        active=active,
-        )
+    
+    call=Call.objects.get(pk=request.POST.get('callid'))
+    
+        # date=date,
+        # call_number=call_number,
+    call.subject=subject,
+    call.sub_subject=sub_subject,
+    call.registration_covid_date=registration_covid_date,
+    call.manipulation=manipulation,
+    call.hospital=hospital,
+    call.city=city,
+    call.question=question,
+    # call.address=address,
+    call.callback_number=callback_number,
+    call.call_result=call_result,
+    call.call_operator=call_operator,
+    call.complited=complited,
+    call.urgent=urgent,
+    call.active=active,
+    
     call.save()
+    patients_array = Patient.objects.filter(call=call)
     patient_fio_array = request.POST.getlist('patient_fio[]')
     patient_date_of_birth = request.POST.getlist('date_of_birth[]')
     for i in range(0,int(request.POST.get('total_forms'))):
         if (patient_fio_array[i] != None): 
-            if(patient_date_of_birth[i] == '' ):
-                    date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
-            else:
-                date_of_birth = datetime.datetime.strptime(patient_date_of_birth[i].strip(), '%d.%m.%Y').isoformat()
-            patient = Patient(
-                patient_fio=patient_fio_array[i],
-                date_of_birth=date_of_birth,
-                call=call
-            )
-            patient.save()
-            
-    journal_create_call = call
-    journal_create_message = f'запись о вызове создана'
-    journal_create_date = datetime.datetime.now().isoformat()
-    journal_create = Journal(
-        call = journal_create_call,
-        date = journal_create_date,
-        message = journal_create_message,
+            for ii in range(0, int(patients_array)):
+                if(patient_date_of_birth[i] == '' ):
+                        date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+                else:
+                    date_of_birth = datetime.datetime.strptime(patient_date_of_birth[i].strip(), '%d.%m.%Y').isoformat()
+                    patient=Patient.objects.get(patient[ii])
+                    patient.patient_fio=patient_fio_array[i]
+                    patient.date_of_birth=date_of_birth
+                    patient.save()
+            if (patient_fio_array[i] != None): 
+                if(patient_date_of_birth[i] == '' ):
+                        date_of_birth = datetime.datetime.strptime('01.01.1900', '%d.%m.%Y').isoformat()
+                else:
+                    date_of_birth = datetime.datetime.strptime(patient_date_of_birth[i].strip(), '%d.%m.%Y').isoformat()
+                    patient.patient_fio=patient_fio_array[i]
+                    patient.date_of_birth=date_of_birth
+                patient = Patient(
+                    patient_fio=patient_fio_array[i],
+                    date_of_birth=date_of_birth,
+                    call=call
+                )
+                patient.save()
+    address = Address.objects.get(call=call)
+
+    address.street=street,
+    address.number=number,
+    address.building=building,
+    address.room=room
+    address.save()
+
+    call.address=address
+    call.save()
+    journal_update_call = call
+    journal_update_message = f'запись о вызове обновлена'
+    journal_update_date = datetime.datetime.now().isoformat()
+    journal_update = Journal(
+        call = journal_update_call,
+        date = journal_update_date,
+        message = journal_update_message,
     )
-    journal_create.save()
+    journal_update.save()
     if call.hospital and call.hospital.email:
         utils.DNS_NAME._fqdn = "122.egov66.ru"
         
@@ -218,7 +235,7 @@ def update(request):
         #     'call_number': call_number,
         #     'call_date': call_date
         # }))
-        message = f'в службу 112 поступило в {call.date} от номера {call.call_number}'
+        message = f'в службе 112 обновлена в {call.date} инфлрмация о звонке от номера {call.call_number}'
         if call.subject:
             message += f'Тема обращения {call.subject.name} \n'
         message += f'суть обращения {call.question} \n'
