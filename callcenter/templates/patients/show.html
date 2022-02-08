@@ -12,33 +12,52 @@
     <h4 class="header center">пользователя {{user.first_name}} {{user.last_name}}</h4>
     <div class="card horizontal">
       <div class="card-stacked">
+        <a class="right-align disabled" href="{% url 'profiles:lk-edit' %}"> <i class="material-icons">create</i></a>
         <div class="card-content">
           <div class="row">
             <div class="input-field col s6">
-                <input placeholder="СНИЛС" id="subject" type="text" class="validate" name="subject"  disabled value="">
+                <input placeholder="СНИЛС" id="snils" type="text" class="validate" name="snils"  disabled value="{{profile.snils}}">
                 <label for="subject">СНИЛС</label>
               </div>
               <div class="input-field col s6">
-                <input placeholder="Медполис" id="subject" type="text" class="validate" name="subject"  disabled value="">
+                <input placeholder="Медполис" id="medpolis" type="text" class="validate" name="medpolis"  disabled value="{{profile.medpolis}}">
                 <label for="subject">Медицинский полис ОМС</label>
               </div>
           </div>
           <div class="row">
             <div class="input-field col s6">
-              <input placeholder="Мобильный телефон" id="subject" type="text" class="validate" name="subject"  disabled value="">
+              <input placeholder="Мобильный телефон" id="mobile" type="text" class="validate" name="mobile"  disabled value="{{profile.mobile}}">
               <label for="subject">Мобильный телефон</label>
             </div>
         
             <div class="input-field col s6">
-              <input placeholder="email" id="subject" type="text" class="validate" name="subject"  disabled value="">
+              <input placeholder="email" id="subject" type="text" class="validate" name="subject"  disabled value="{{user.email}}">
               <label for="subject">email</label>
             </div>
           </div>
         </div>
-        <div class="card-action">
-          <a href="/">Назначить видеоконсультацию</a>
+        <div class="card-action center">
+          {% if profile.snils == None or profile.medpolis == None or profile.mobile == None%}
+          <a class="center-align btn disabled" href="/">Назначить видеоконсультацию</a>
+          {% else %}
+          <a class="center-align btn" href="/">Назначить видеоконсультацию</a>
+          {% endif %}
         </div>
       </div>
+    </div>
+    <div class="row">
+      {% if vcalls %}
+      есть
+      {% else %}
+      <div class="col s6 m6 offset-m3">
+        <div class="card light-blue">
+          <div class="card-content white-text">
+            <p class="center">Видео консультации вам ранее не оказывались</p>
+          </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
             

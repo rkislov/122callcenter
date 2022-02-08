@@ -1,3 +1,4 @@
+from unittest import result
 from django.db import models
 
 from django.db import models
@@ -5,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 
-class videocall(models.Model):
+class Videocall(models.Model):
     ''' Модель описывающая подтип обращения'''
     date = models.DateTimeField(auto_now_add=True)
     date_of_call = models.DateTimeField(default=None),
@@ -22,6 +23,10 @@ class videocall(models.Model):
         null=True,
         related_name='videocall_doctor'
     )
+    request = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
+    success = models.BooleanField(default=False)
+    nomer_bolnichnogo = models.CharField(max_length=20, blank=True, null=True)
 
     
 

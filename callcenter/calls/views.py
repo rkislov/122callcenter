@@ -2,7 +2,6 @@ import email
 from email import message
 from multiprocessing import context
 from pyexpat import model
-from re import template
 from unittest.mock import call
 from django.shortcuts import redirect, render, get_list_or_404
 from django.contrib.auth.decorators import login_required

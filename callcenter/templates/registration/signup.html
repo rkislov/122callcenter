@@ -12,7 +12,7 @@
       <div class="card light-blue">
         <div class="card-content white-text">
           <span class="card-title">Форма регистрации</span>
-          <form method="post">
+          <form method="POST" >
             {% csrf_token %}
             {% if next %}
               {% if user.is_authenticated %}
@@ -21,7 +21,6 @@
                 <p>Пожалуйста введите логин и пароль</p>
               {% endif %}
             {% endif %}
-            {% csrf_token %}
             <table>
             <tr>
               <td>Имя пользователя
