@@ -7,5 +7,6 @@ urlpatterns = [
     path('video/', include('video.urls', namespace='video')),
     path('hospital/', include('hospitals.urls', namespace='hospitals')),
     path('supervisers/', include('supervisers.urls', namespace='supervisers')),
+    path('profiles/', include('profiles.urls', namespace='profiles')),
     path('admin/', admin.site.urls),
 ]

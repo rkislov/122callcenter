@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+  <p>Ваш логин и пароль не валидны</p>
+{% endif %}
+
+
+<div class="row ">
+    <div class="col s6 m6 offset-s3 offset-m3 ">
+      <div class="card light-blue">
+        <div class="card-content white-text">
+          <span class="card-title">Форма регистрации</span>
+          <form method="post">
+            {% csrf_token %}
+            {% if next %}
+              {% if user.is_authenticated %}
+                <p>У вас нет права для доступа к этой странице</p>
+              {% else %}
+                <p>Пожалуйста введите логин и пароль</p>
+              {% endif %}
+            {% endif %}
+            {% csrf_token %}
+            <table>
+            <tr>
+              <td>Имя пользователя
+              </td>
+              <td>{{ form.username }}</td>
+            </tr>
+            
+            <tr>
+              <td>Пароль</td>
+              <td>{{ form.password1 }}</td>
+            </tr>
+            <tr>
+              <td>Повторный ввод пароля</td>
+              <td>{{ form.password2 }}</td>
+            </tr>
+            <tr>
+              <td>email</td>
+              <td>{{ form.email }}</td>
+            </tr>
+            </table>
+            <div class="card-action center-align">
+                <input class="waves-effect waves-light btn green" type="submit" value="Регистрация" />
+            </form>
+            
+            </div>
+        
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{# Assumes you setup the password_reset view in your URLconf #}
+
+
+{% endblock %}

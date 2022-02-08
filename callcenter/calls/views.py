@@ -21,10 +21,6 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from .forms import AddForm
-
-
-
 
 
 @login_required
@@ -38,6 +34,7 @@ def index(request):
 
 
 @login_required
+@permission_required('calls.view_calls') 
 def add(request):
     template = 'calls/add.html'
     subjects = Subject.objects.all()
@@ -72,6 +69,7 @@ def show(request, id):
 
 
 @login_required
+@permission_required('calls.view_call') 
 def save(request):
     date = datetime.datetime.now().isoformat()
     call_number = request.POST.get('call_number').strip()

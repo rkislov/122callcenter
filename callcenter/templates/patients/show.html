@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+ 
+  <div class="col s12 m7">
+    <h2 class="header center">Личный кабинет</h2>
+    <h4 class="header center">пользователя {{user.first_name}} {{user.last_name}}</h4>
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+          <div class="row">
+            <div class="input-field col s6">
+                <input placeholder="СНИЛС" id="subject" type="text" class="validate" name="subject"  disabled value="">
+                <label for="subject">СНИЛС</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Медполис" id="subject" type="text" class="validate" name="subject"  disabled value="">
+                <label for="subject">Медицинский полис ОМС</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input placeholder="Мобильный телефон" id="subject" type="text" class="validate" name="subject"  disabled value="">
+              <label for="subject">Мобильный телефон</label>
+            </div>
+        
+            <div class="input-field col s6">
+              <input placeholder="email" id="subject" type="text" class="validate" name="subject"  disabled value="">
+              <label for="subject">email</label>
+            </div>
+          </div>
+        </div>
+        <div class="card-action">
+          <a href="/">Назначить видеоконсультацию</a>
+        </div>
+      </div>
+    </div>
+  </div>
+            
+</div>
+{% endblock content %}
+
+{% block js %}
+   
+{% endblock js%}
