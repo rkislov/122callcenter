@@ -24,12 +24,17 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 
 @login_required
 def index(request):
-    calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
-    template = 'calls/index.html'
-    context = {
-        'calls': calls,
-    }
-    return render(request, template, context)
+    if request.user.has_perm('calls.view_call'):
+        calls = Call.objects.filter(call_operator=request.user).select_related('call_result').order_by('-date')[:10]
+        template = 'calls/index.html'
+        context = {
+            'calls': calls,
+        }
+        return render(request, template, context)
+    if request.user.has_perm('video.view_videocall'):
+        return redirect('doctor/lk')
+    else:
+        return redirect('profiles/lk')
 
 
 @login_required
@@ -54,6 +59,7 @@ def add(request):
     return render(request, template, context)
 
 @login_required
+@permission_required('calls.view_call') 
 def show(request, id):
     template = 'calls/show.html'
     call = Call.objects.get(pk=id)

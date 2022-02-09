@@ -33,24 +33,27 @@ from django.contrib.auth import authenticate
 # Create your views here.
 @login_required
 def show(request):
-    template = 'patients/show.html'
-    user = request.user
-    vcalls = Videocall.objects.filter(patient=user)[:10]
-    profile = Profile.objects.get(user=user)
-    if profile:
-        profile = profile
-    else:
-        profile = None
-    if vcalls:
-        vcalls = vcalls
-    else:
-        vcalls = None
-    context = {
-        'user': user,
-        'vcalls': vcalls,
-        'profile': profile
-    }
-    return render(request, template, context)
+    if request.user.has_perm('video.view_videocall'):
+        return redirect('doctors:lk')
+    else: 
+        template = 'patients/show.html'
+        user = request.user
+        vcalls = Videocall.objects.filter(patient=user)[:10]
+        profile = Profile.objects.get(user=user)
+        if profile:
+            profile = profile
+        else:
+            profile = None
+        if vcalls:
+            vcalls = vcalls
+        else:
+            vcalls = None
+        context = {
+            'user': user,
+            'vcalls': vcalls,
+            'profile': profile
+        }
+        return render(request, template, context)
 
 @login_required
 def edit(request):

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'supervisers',
     'video',
     'profiles',
+    'doctors',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

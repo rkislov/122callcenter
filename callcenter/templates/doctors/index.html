@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    <div class="row center">
+      {% comment %} <a href="{% url 'calls:add' %}" id="download-button" class="btn-large waves-effect waves-light orange">Добавить</a> {% endcomment %}
+    </div>
+    <br><br>
+    {% if vcalls %} 
+    <div class="raw">
+      <table class="highlight">
+        <thead>
+          <tr>
+              <th>Время звонка</th>
+              <th>ФИО пациента</th>
+              <th>Статус</th> 
+              <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for vcall in  vcalls %}
+          <tr>
+            <td>{{vcall.date| date:"d.m.Y"}}</td>
+            <td>{{vcall.patient.first_name}} {{vcall.patient.last_name}}</td>
+            <td>
+              {% if   vcall.success   %}
+                  {% if vcall.nomer_bolnichnogo %}
+                  номер больничного {{vcall.nomer_bolnichnogo}}
+                  {% else %}
+                  больничный не выдан
+                  {% endif %}
+              {% elif  vcall.request == True and vcall.accepted == False %}
+              <a href={% url 'doctors:accept' id=vcall.id %}>Назначить видеоконсультацию</a> 
+                {% elif vcall.accepted == True and vcall.request == True  %}
+              <a href={% url 'video:doctor_room' url_str=vcall.url_str %}>Видеоконсультация</a>
+                
+              {% else %}  
+              
+
+                {% endif %}
+                
+            </td>
+            <td>
+              {% comment %} <a href={% url 'video:doctor_room' id=vcall.id %}> <i class="material-icons">assignment</i></a> {% endcomment %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="row">
+      <div class="col s6 m6 offset-m3">
+        <div class="card light-blue">
+          <div class="card-content white-text">
+            <p class="center">Сегодня вами не было принято звонков</p>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock content %}

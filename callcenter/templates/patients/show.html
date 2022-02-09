@@ -40,14 +40,37 @@
           {% if profile.snils == None or profile.medpolis == None or profile.mobile == None%}
           <a class="center-align btn disabled" href="/">Назначить видеоконсультацию</a>
           {% else %}
-          <a class="center-align btn" href="/">Назначить видеоконсультацию</a>
+          <a class="center-align btn" href="{% url 'video:generate_link_patient' %}">Назначить видеоконсультацию</a>
           {% endif %}
         </div>
       </div>
     </div>
     <div class="row">
       {% if vcalls %}
-      есть
+      <div class="raw center">
+        <h4>Видеоконсультации</h4>
+        <table class="center">
+            <thead>
+              <tr>
+                  <th class="center">Время</th>
+                  <th class="center">Состояние</th>  
+              </tr>
+            </thead>
+            <tbody>
+              {% for vcall in vcalls %}
+                    <tr>
+                      {% if vcall.date_of_call %}
+                      Назначена {{vcall.date_of_call | date:"d.m.Y G:i"}}
+                      {% else %}
+                        <td class="center">Запрос создан {{vcall.date | date:"d.m.Y G:i"}}</td>
+                      {% endif %}
+                        {% if vcall.request%}
+                        <td class="center">Ожидает назначения врача</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
       {% else %}
       <div class="col s6 m6 offset-m3">
         <div class="card light-blue">

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row ">
+    <div class="col s6 m6 offset-m3 ">
+      <div class="card light-blue  lighten-1">
+        <div class="card-content white-text">
+          <span class="card-title center-align">Немного терпения</span>
+            Уважаемы {{user.first_name}} {{user.last_name}}, в данный момент доктор еще не освободился. 
+            В ближайшее время доктор назначит вам время проведения видеоконсультации.
+            <div class="card-action center-align">
+                <br>
+                <div class="center-align">
+                    <a href="{% url 'profiles:lk'%}">Вернуться в личный кабинет</a>
+                </div>
+            </form>
+            
+            </div>
+        
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
