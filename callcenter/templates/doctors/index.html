@@ -26,16 +26,16 @@
           <tr>
             <td>{{vcall.date| date:"d.m.Y"}}</td>
             <td>{{vcall.patient.first_name}} {{vcall.patient.last_name}}</td>
-            <td>
-              {% if   vcall.success   %}
+            <td class="center">
+              {% if   vcall.success == True   %}
                   {% if vcall.nomer_bolnichnogo %}
                   номер больничного {{vcall.nomer_bolnichnogo}}
                   {% else %}
                   больничный не выдан
                   {% endif %}
-              {% elif  vcall.request == True and vcall.accepted == False %}
+              {% elif  vcall.request and vcall.accepted == False %}
               <a href={% url 'doctors:accept' id=vcall.id %}>Назначить видеоконсультацию</a> 
-                {% elif vcall.accepted == True and vcall.request == True  %}
+                {% elif vcall.accepted == True  and vcall.request == True %}
               <a href={% url 'video:doctor_room' url_str=vcall.url_str %}>Видеоконсультация</a>
                 
               {% else %}  

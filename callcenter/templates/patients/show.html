@@ -60,13 +60,28 @@
               {% for vcall in vcalls %}
                     <tr>
                       {% if vcall.date_of_call %}
-                      Назначена {{vcall.date_of_call | date:"d.m.Y G:i"}}
+                     <td> Назначена {{vcall.date_of_call | date:"d.m.Y G:i"}}</td>
                       {% else %}
                         <td class="center">Запрос создан {{vcall.date | date:"d.m.Y G:i"}}</td>
                       {% endif %}
-                        {% if vcall.request%}
-                        <td class="center">Ожидает назначения врача</td>
-                        {% endif %}
+                      <td>
+                        {% if   vcall.success == True   %}
+                            {% if vcall.nomer_bolnichnogo %}
+                            номер больничного {{vcall.nomer_bolnichnogo}}
+                            {% else %}
+                            больничный не выдан
+                            {% endif %}
+                        {% elif  vcall.request == True and vcall.accepted == False %}
+                        Ожидает назначения 
+                          {% elif vcall.accepted == True and vcall.request == True   %}
+                        <a href={% url 'video:patient_room' url_str=vcall.url_str %}>Видеоконсультация</a>
+                          
+                        {% else %}  
+                        
+          
+                          {% endif %}
+                          
+                      </td>
                     </tr>
                 {% endfor %}
             </tbody>
