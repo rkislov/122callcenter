@@ -37,7 +37,7 @@ def index(request):
         return redirect('profiles/lk')
 
 
-
+@login_required
 def add(request):
     template = 'calls/add.html'
     subjects = Subject.objects.all()
