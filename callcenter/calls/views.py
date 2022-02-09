@@ -38,7 +38,6 @@ def index(request):
 
 
 @login_required
-@permission_required('calls.view_calls') 
 def add(request):
     template = 'calls/add.html'
     subjects = Subject.objects.all()
