@@ -39,7 +39,7 @@ def show(request):
         template = 'patients/show.html'
         user = request.user
         vcalls = Videocall.objects.filter(patient=user)[:10]
-        if Profile.objects.get(user=user).exists:
+        if Profile.objects.get(user=user).exists():
             profile = Profile.objects.get(user=user)
         else:
             profile = None
