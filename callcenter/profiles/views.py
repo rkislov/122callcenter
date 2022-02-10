@@ -85,7 +85,10 @@ def edit(request):
     else:
         template = 'patients/edit.html'
         user = request.user
-        profile = Profile.objects.get(user=user)
+        try:
+            profile = Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            profile = None
         context = {
             'user': user,
             'profile': profile

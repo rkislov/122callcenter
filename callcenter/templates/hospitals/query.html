@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}
+
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    <div class=raw>
+        <h3>Личный кабинет {{hospital}}</h3>
+        <h5>Необработанных карточек {{count}}</h5>
+    </div>
+    <div class="row center">
+      <a href="{% url 'calls:add' %}" id="download-button" class="btn-large waves-effect waves-light orange">Добавить</a>
+    </div>
+    <br><br>
+    {% if calls %} 
+    <div class="raw">
+      <table class="highlight">
+        <thead>
+          <tr>
+              <th>Время звонка</th>
+              <th>Номер звонящего</th>
+             <th>Статус</th> 
+              <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for call in  calls %}
+          <tr>
+            <td>{{call.date| date:"d.m.Y"}}</td>
+            <td>{{call.call_number}}</td>
+            <td>{% if call.active == True %}
+                  Ожидает обрабоки
+                {% else %}
+                  Обработан
+                {% endif %}
+                
+            </td>
+            <td><a href={% url 'hospitals:show' pk=call.pk %}> <i class="material-icons">assignment</i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% block pagination %}
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">назад</a>
+              {% endif %}
+              <span class="page-current">
+                  страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">вперед</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}
+{% endblock %} 
+
+            
+      
+    </div>
+    {% else %}
+    <div class="row">
+      <div class="col s6 m6 offset-m3">
+        <div class="card light-blue">
+          <div class="card-content white-text">
+            <p class="center">Сегодня вами не было принято звонков</p>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock content %}

@@ -20,6 +20,9 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import PermissionRequiredMixin
+import json
+from django.core.serializers import serialize
+from django.views import View
 
 
 @login_required
@@ -286,3 +289,5 @@ def load_sub_subject(request):
     sub_subject = Sub_subject.objects.filter(subject=subject).order_by('name')
 
     return JsonResponse(list(sub_subject.values('id','name')), safe=False)
+
+

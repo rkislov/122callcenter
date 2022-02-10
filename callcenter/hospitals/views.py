@@ -21,6 +21,9 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import PermissionRequiredMixin
+import json
+from django.core.serializers import serialize
+from django.views import View
 
 
 
@@ -138,3 +141,93 @@ def hospital_wrong(request, id):
 
     return redirect('hospitals:all')
 
+class ListCalls(View):
+    page_limit = 10
+    def get_paginated_context(self, queryset, page, limit):
+        if not page:    page = 1 # if no page provided, set 1
+
+        # if limit specified, set the page limit
+        if limit:   
+            self.page_limit = limit  
+
+        # instantiate the paginator object with queryset and page limit
+        paginator = Paginator(queryset, self.page_limit)
+        # get the page object
+        page_obj = paginator.get_page(page)
+        # serialize the objects to json
+        serialized_page = serialize("json", page_obj.object_list)
+        # get only required fields from the serialized_page json.
+        serialized_page = [obj["fields"] for obj in json.loads(serialized_page)]
+
+        # return the context.
+        return {
+            "data": serialized_page,
+            "pagination": {
+                "page": page,
+                "limit": limit,
+                "has_next": page_obj.has_next(),
+                "has_prev": page_obj.has_previous(),
+                "total": queryset.count()
+            }
+        }
+
+    '''
+    GET method for this View.
+    '''
+    def get(self, request, *args, **kwargs):
+        # fetch the query params
+        page = request.GET.get('page')
+        limit = request.GET.get('limit')
+        active = request.GET.get('active')
+        hospital = request.GET.get('hospital') 
+        if (request.POST.get('start') == None): 
+            start = ''
+        else:
+            start = datetime.datetime.strptime(request.POST.get('start'), '%d.%m.%Y').isoformat()    
+        if (request.POST.get('end') == None): 
+            end = ''
+        else:
+            end = datetime.datetime.strptime(request.POST.get('end'), '%d.%m.%Y').isoformat()    
+        
+       
+
+        sort_by = request.GET.get('sort_by')
+        # get all results from DB.
+        queryset = Call.objects.all()
+        #hospital = Hospital.objects.get(email=self.request.user.email)
+        #Call.objects.pref_related('call_result')
+        '''filter the queryset object based on query params'''
+        # 1. on basis of country
+        if active and active != "all":
+            queryset = queryset.filter(active=active)
+        # 2. On basis of date (start and end date)
+        if start and end:
+            if start != "0" and end != "0":
+                queryset = queryset.filter(
+                    date__gte = start, 
+                    date__lte = end
+                )
+
+        # 3. Sorting the filtered queryset
+        if sort_by and sort_by != "0":
+            queryset = queryset.order_by(sort_by)
+        
+         # 3. Sorting the filtered queryset
+        if hospital and hospital != "0":
+            queryset = queryset.select(hospital=hospital)
+
+        # return the serialized output by 
+        # calling method 'get_paginated_context'
+        to_return = self.get_paginated_context(queryset, page, limit)
+        return JsonResponse(to_return, status = 200)
+
+def getCallResult(request):
+    # get Countries from the database 
+    # excluding null and blank values
+    if request.method == "GET":
+        call_result = Call_result.objects.all().values_list('name').distinct()
+        call_result = [c[0] for c in list(call_result)]
+
+        return JsonResponse({
+            "call_result": call_result, 
+        }, status = 200)

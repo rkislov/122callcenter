@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
 
 {% endblock title%}
@@ -8,12 +9,48 @@
     <div class=raw>
         <h3>Личный кабинет {{hospital}}</h3>
         <h5>Необработанных карточек {{count}}</h5>
+        <div class="row">
+          <div class="input-field col s3">
+                <i class="material-icons prefix">event</i>
+                <input type="text" id="start" class="datepicker" name="start" value="">
+                <label for="date1">Дата начала</label>
+            </div>
+            <div class="input-field col s3">
+              <i class="material-icons prefix">event</i>
+              <input type="text" id="end" class="datepicker" name="end" value="">
+              <label for="date1">Дата окончания</label>
+          </div>
+          <div class="input-field col s3">
+          <select class="form-control" id="sort">
+            <option value="0">Сортировка</option>
+            <option value="call_number">Номер телефона</option>
+            <option value="date">Дата обращения</option>
+        </select>
+      </div>
+      <div class="input-field col s1">
+        <select class="form-control" id="page_limit">
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+      </select>
     </div>
-    <div class="row center">
+      <div class="input-field col s2">
+        <select name="call_result" id="call_result" url={% url 'hospitals:get_callresult' %}>
+        </select>
+      </div>
+          </div>
+        <div id="result-count" class="text-right">
+          <span class='font-weight-bold'></span> Карточек найдено
+      </div>
+      <div id="page-count" class="text-right">Страница:
+          <span class='font-weight-bold'></span>
+      </div>
+    </div>
+    {% comment %} <div class="row center">
       <a href="{% url 'calls:add' %}" id="download-button" class="btn-large waves-effect waves-light orange">Добавить</a>
-    </div>
+    </div> {% endcomment %}
     <br><br>
-    {% if calls %} 
+    
     <div class="raw">
       <table class="highlight">
         <thead>
@@ -25,7 +62,7 @@
           </tr>
         </thead>
 
-        <tbody>
+        {% comment %} <tbody>
           {% for call in  calls %}
           <tr>
             <td>{{call.date| date:"d.m.Y"}}</td>
@@ -39,10 +76,22 @@
             </td>
             <td><a href={% url 'hospitals:show' pk=call.pk %}> <i class="material-icons">assignment</i></a></td>
           </tr>
-          {% endfor %}
+          {% endfor %} {% endcomment %}
+          <tbody id="table_body">
+          </tbody>
         </tbody>
       </table>
-      {% block pagination %}
+<div class="row center">
+      <ul class="pagination">
+        <li class="page-item">
+            <button class="btn btn-primary page-link" id = "previous">Previous</button>
+        </li>
+        <li class="page-item pull-right">
+            <button class="btn btn-primary page-link" id="next">Next</button>
+        </li>
+    </ul>
+  </div>
+      {% comment %} {% block pagination %}
   {% if is_paginated %}
       <div class="pagination">
           <span class="page-links">
@@ -58,22 +107,12 @@
           </span>
       </div>
   {% endif %}
-{% endblock %} 
+{% endblock %}  {% endcomment %}
 
-            
-      
-    </div>
-    {% else %}
-    <div class="row">
-      <div class="col s6 m6 offset-m3">
-        <div class="card light-blue">
-          <div class="card-content white-text">
-            <p class="center">Сегодня вами не было принято звонков</p>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-  </div>
+
 {% endblock content %}
+{% block js %}
+<script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/select.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/active__page_hospitals.js' %}"></script>
+{% endblock js %}
