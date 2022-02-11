@@ -31,7 +31,7 @@
                   {% if vcall.nomer_bolnichnogo %}
                   номер больничного {{vcall.nomer_bolnichnogo}}
                   {% else %}
-                  больничный не выдан
+                  консультация оказана
                   {% endif %}
               {% elif  vcall.request and vcall.accepted == False %}
               <a href={% url 'doctors:accept' id=vcall.id %}>Назначить видеоконсультацию</a> 
