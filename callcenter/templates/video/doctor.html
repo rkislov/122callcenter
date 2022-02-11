@@ -48,7 +48,7 @@ const api = new JitsiMeetExternalAPI(domain, options);
 api.addEventListener('readyToClose', function(){
   api.dispose();
   $.ajax({
-    url: "{% url 'doctors:finish' id=url_str %}",
+    url: "{% url 'doctors:finish' url_str=url_str %}",
     type: 'GET',
     success: function(res) {
         console.log(res);
