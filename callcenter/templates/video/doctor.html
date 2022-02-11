@@ -48,15 +48,14 @@ const api = new JitsiMeetExternalAPI(domain, options);
 api.addEventListener('readyToClose', function(){
   api.dispose();
   $.ajax({
-    url: "https://122.egov66.ru/doctor/finish/",
+    url: "{% url 'doctors:finish' id=url_str %}",
     type: 'GET',
-    
     success: function(res) {
         console.log(res);
         alert(res);
     }
 });
-  window.location.href="https://122.egov66.ru/";
+  window.location.href="{% url 'doctors:finish' url_str=url_str %}";
 })
 }
 window.onload = () => {

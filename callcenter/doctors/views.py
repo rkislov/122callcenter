@@ -76,3 +76,11 @@ def accept(request,id):
     mail.send()
     return redirect('doctors:lk')
 
+@login_required
+@permission_required('video.view_videocall')
+def finish(request, url_str):
+    videocall=Videocall.objects.get(url_str=url_str)
+    videocall.success = True
+    videocall.save() 
+    return redirect('doctors:lk')
+

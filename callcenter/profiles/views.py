@@ -162,5 +162,3 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'registration/account_activation_invalid.html')
 
-def finish(request):
-    pass
